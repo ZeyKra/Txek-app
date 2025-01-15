@@ -1,0 +1,10 @@
+{
+    "coup-oeil": 10,
+    "echange": 10,
+    "main": 15,
+    "depose": 15,
+    "couronne": {
+        "red" : 0,
+        "black" : 20
+    }
+}

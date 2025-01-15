@@ -1,4 +1,6 @@
 export enum CardColor {
-    red,
-    black
+    red = "red",
+    black = "black"   
 }
+
+

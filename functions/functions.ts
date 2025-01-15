@@ -1,13 +1,13 @@
 import { txekPlayer } from "../interfaces/txekPlayer.ts";
 
 function countDeck(player : txekPlayer) {
-    let _ = 0;
+    let count = 0;
     player.deck.map(carte => {
         if (carte.length < 2) {
-            _ += parseInt(carte);
+            count += parseInt(carte);
         }    
     })
-    return _;
+    return count;
 }
 
 export default { countDeck }

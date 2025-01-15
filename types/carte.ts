@@ -5,3 +5,4 @@ export type carte = {
     value : number,
     color: CardColor
 }
+

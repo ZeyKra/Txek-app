@@ -8,5 +8,3 @@
 |Main          |15         | 15       |Action|
 |Depose        |15         | 15       |Action|
 |Couronne      |0          | 20       |Couronnes|
-
-   
