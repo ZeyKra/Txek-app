@@ -1,18 +1,19 @@
-import { Button, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
 
-export default function TabTwoScreen() {
+export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Créer une partie</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgb(240, 50, 50)" />
-      {/* <Button title="Start Game" onPress={() => {}} /> */}
-      <Link href="/(game)/game" style={styles.button} asChild>
+      <Text style={styles.title}>game</Text>
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
+      {['Joueur 1', 'Joueur 2', 'Joueur 3'].map((player, index) => (
+              <Text key={index} style={styles.title}>{player}</Text>
+            ))}
+      <Link href="/" style={styles.button}>
         <Pressable>
-          <Text> Créer Game</Text>
+          <Text> Game </Text>
         </Pressable>
       </Link>
     </View>

@@ -1,12 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>game</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.title}>Compter points</Text>
+      <link>
+        <Pressable>
+          <Text> Compter les pts</Text>
+        </Pressable>
+      </link>
     </View>
   );
 }
