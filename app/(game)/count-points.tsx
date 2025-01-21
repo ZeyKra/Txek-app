@@ -1,31 +1,74 @@
-import { Pressable, StyleSheet } from "react-native";
+import { CameraView } from 'expo-camera';
+import React, { useState, useRef } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, Image, Alert } from 'react-native';
 
-import { Text, View } from "@/components/Themed";
 
-export default function CountPointsPage() {
+export default function App() {
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const cameraRef = useRef<CameraView>(null);
+
+  // Function to take a photo
+  const takePicture = async () => {
+    if (cameraRef.current?.takePictureAsync) {
+      try {
+        const photo = await cameraRef.current.takePictureAsync();
+
+        if (photo?.uri) {
+          setPhotoUri(photo.uri);
+          Alert.alert('Photo prise', `Photo sauvegarder: ${photo.uri}`);
+          console.log('Captured photo:', photo);
+        } else {
+          Alert.alert("La photo n'a pas pu etre prise");
+        }
+      } catch (error) {
+        console.error('Erreur pendant la photographie:', error);
+      }
+    } else {
+      Alert.alert('Error', 'CameraView component does not support taking pictures.');
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Compter points</Text>
-      <Pressable>
-        <Text> Compter les pts</Text>
-      </Pressable>
+    <View style={{ flex: 1 }}>
+      {photoUri ? (
+        <View style={{ flex: 1 }}>
+          {/* Display captured photo */}
+          <Image source={{ uri: photoUri }} style={{ flex: 1 }} />
+          <TouchableOpacity style={styles.button} onPress={() => setPhotoUri(null)}>
+            <Text style={styles.text}>Prendre une nouvelle photo</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <CameraView
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          onCameraReady={() => console.log('La camera est prête')}
+        >
+          <View style={styles.controls}>
+            <TouchableOpacity style={styles.button} onPress={takePicture}>
+              <Text style={styles.text}>Prendre la photo</Text>
+            </TouchableOpacity>
+          </View>
+        </CameraView>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  controls: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  button: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 15,
+    borderRadius: 10,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  text: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
