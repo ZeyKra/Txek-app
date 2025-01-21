@@ -42,6 +42,9 @@ export default function App() {
         <View style={{ flex: 1 }}>
           {/* Display captured photo */}
           <Image source={{ uri: photoUri }} style={{ flex: 1 }} />
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <Text style={styles.text}>Choisir cette photo</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => setPhotoUri(null)}>
             <Text style={styles.text}>Prendre une nouvelle photo</Text>
           </TouchableOpacity>
