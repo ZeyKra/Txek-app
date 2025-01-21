@@ -1,9 +1,12 @@
-import { CameraView } from 'expo-camera';
+import { CameraType, CameraView } from 'expo-camera';
 import React, { useState, useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image, Alert } from 'react-native';
 
+import { FontAwesome6 } from "@expo/vector-icons"
+
 
 export default function App() {
+  const [facing, setFacing] = useState<CameraType>('back');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const cameraRef = useRef<CameraView>(null);
 
@@ -15,7 +18,7 @@ export default function App() {
 
         if (photo?.uri) {
           setPhotoUri(photo.uri);
-          Alert.alert('Photo prise', `Photo sauvegarder: ${photo.uri}`);
+          //Alert.alert('Photo prise', `Photo sauvegarder: ${photo.uri}`);
           console.log('Captured photo:', photo);
         } else {
           Alert.alert("La photo n'a pas pu etre prise");
@@ -27,6 +30,11 @@ export default function App() {
       Alert.alert('Error', 'CameraView component does not support taking pictures.');
     }
   };
+
+  //Fonction pour changer la camera (forntale|arriere)
+  const changeCameraFacing = async () => {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -43,7 +51,13 @@ export default function App() {
           ref={cameraRef}
           style={StyleSheet.absoluteFill}
           onCameraReady={() => console.log('La camera est prête')}
+          facing={facing}
         >
+          <View style={styles.topcontrols}>
+            <TouchableOpacity style={styles.arrow} onPress={changeCameraFacing}>
+              <FontAwesome6 name="arrows-rotate" size={32} color="white" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.controls}>
             <TouchableOpacity style={styles.button} onPress={takePicture}>
               <Text style={styles.text}>Prendre la photo</Text>
@@ -71,4 +85,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  topcontrols: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems : 'flex-end',
+    paddingTop: 20,
+    paddingEnd: 20,
+  }, 
+  arrow: {
+    color: '#fff',
+    justifyContent: 'flex-start'
+  }
 });
