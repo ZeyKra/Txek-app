@@ -1,14 +1,18 @@
-import { Button, Pressable, StyleSheet } from 'react-native';
+import { Button, Pressable, StyleSheet } from "react-native";
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-import { Link } from 'expo-router';
+import EditScreenInfo from "@/components/EditScreenInfo";
+import { Text, View } from "@/components/Themed";
+import { Link } from "expo-router";
 
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Créer une partie</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgb(240, 50, 50)" />
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgb(240, 50, 50)"
+      />
       {/* <Button title="Start Game" onPress={() => {}} /> */}
       <Link href="/(game)/game" style={styles.button} asChild>
         <Pressable>
@@ -22,23 +26,23 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
-    backgroundColor: '#841584',
+    backgroundColor: "#841584",
     padding: 10,
     borderRadius: 5,
-    alignItems: 'center',
-    color: 'white',
+    alignItems: "center",
+    color: "white",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });

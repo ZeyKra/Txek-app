@@ -1,34 +1,37 @@
-import { Pressable, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, TextInput } from "react-native";
 
-import { Text, View } from '@/components/Themed';
-import { Link } from 'expo-router';
-import { useState } from 'react';
+import { Text, View } from "@/components/Themed";
+import { Link } from "expo-router";
+import { useState } from "react";
 
 export default function PlayerInput() {
-  const [players, setPlayers] = useState<string[]>([""])
+  const [players, setPlayers] = useState<string[]>([""]);
 
   const handleInputChange = (text: string, index: number) => {
-    const newPlayers = [...players]
-    newPlayers[index] = text
+    const newPlayers = [...players];
+    newPlayers[index] = text;
 
     // Ajout d'un nouvel input field si le denier est remplit
     if (text.length > 0 && index === players.length - 1) {
       if (players.length < 8) {
-        newPlayers.push("")
+        newPlayers.push("");
       }
     }
 
     // Si l'input selectioner et vider et ce n'est pas le premier ça la supprime
-    if (text.length == 0 && index !== 0 && index === players.length - 2) {
-      newPlayers.pop()
+    if (text.length === 0 && index !== 0 && index === players.length - 2) {
+      newPlayers.pop();
     }
 
-    setPlayers(newPlayers)
-  }
+    setPlayers(newPlayers);
+  };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.inputContainer}>
-      {players.map((player, index) => (
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.inputContainer}
+    >
+      {players.map((player : string, index: number) => (
         <TextInput
           key={index}
           style={styles.input}
@@ -47,7 +50,7 @@ export default function PlayerInput() {
         </Link>
       </Pressable>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -56,11 +59,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   button: {
-    backgroundColor: '#841584',
+    backgroundColor: "#841584",
     padding: 10,
     borderRadius: 5,
-    alignItems: 'center',
-    color: 'white',
+    alignItems: "center",
+    color: "white",
   },
   inputContainer: {
     padding: 20,
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center", // Center horizontal
     justifyContent: "center", // Center vertical
-    minHeight: "100%", 
+    minHeight: "100%",
   },
   input: {
     backgroundColor: "#4B96F3",
@@ -76,8 +79,8 @@ const styles = StyleSheet.create({
     padding: 15,
     fontSize: 16,
     color: "#fff",
-    width: "90%", 
-    maxWidth: 400, // Maximum width 
+    width: "90%",
+    maxWidth: 400, // Maximum width
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -87,4 +90,4 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-})
+});
