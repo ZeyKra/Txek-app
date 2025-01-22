@@ -4,7 +4,7 @@ import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import { Link } from "expo-router";
 
-export default function TabTwoScreen() {
+export default function CreateGamePage() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Créer une partie</Text>

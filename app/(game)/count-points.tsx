@@ -1,11 +1,12 @@
-import { CameraType, CameraView } from 'expo-camera';
+import { type CameraType, CameraView } from 'expo-camera';
 import React, { useState, useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image, Alert } from 'react-native';
 
 import { FontAwesome6 } from "@expo/vector-icons"
+import { checkCard } from '../backend/moondream/imagerecognition';
 
 
-export default function App() {
+export default function CountPointsPage() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const cameraRef = useRef<CameraView>(null);
@@ -42,7 +43,7 @@ export default function App() {
         <View style={{ flex: 1 }}>
           {/* Display captured photo */}
           <Image source={{ uri: photoUri }} style={{ flex: 1 }} />
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={() => { checkCard(photoUri) }}>
             <Text style={styles.text}>Choisir cette photo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => setPhotoUri(null)}>
