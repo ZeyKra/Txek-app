@@ -20,7 +20,7 @@ export default function CountPointsPage() {
         if (photo?.uri) {
           setPhotoUri(photo.uri);
           //Alert.alert('Photo prise', `Photo sauvegarder: ${photo.uri}`);
-          console.log('Captured photo:', photo);
+          //console.log('Captured photo:', photo);
         } else {
           Alert.alert("La photo n'a pas pu etre prise");
         }

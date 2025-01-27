@@ -1,6 +1,8 @@
 import * as FileSystem from 'expo-file-system';
+import env from "../../../env.json";
 
-const apiKey = ""
+
+const apiKey = env.MOONDREAM_API_KEY;
 /**
  * fait un fetch request a l'api de moondream avec le clé d'api
  * 
