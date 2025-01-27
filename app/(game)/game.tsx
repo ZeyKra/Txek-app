@@ -19,7 +19,7 @@ export default function PlayerInput() {
     }
 
     // Si l'input selectioner et vider et ce n'est pas le premier ça la supprime
-    if (text.length === 0 && index !== 0 && index === players.length - 2) {
+    if (text.length == 0 && index !== 0 && index === players.length - 2) {
       newPlayers.splice(index, 1)
     }
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#841584",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 2,
     alignItems: "center",
     color: "white",
   },
@@ -74,14 +74,17 @@ const styles = StyleSheet.create({
     minHeight: "100%",
   },
   input: {
-    backgroundColor: "#4B96F3",
-    borderRadius: 25,
+    color: "#000",
+    backgroundColor: "#fff",
+    borderRadius: 15,
     padding: 15,
     fontSize: 16,
-    color: "#fff",
     width: "90%",
     maxWidth: 400, // Maximum width
+    borderWidth: 5,
+    borderColor: "red",
     shadowColor: "#000",
+    transform: "preserve3d",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -89,5 +92,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-  },
+  }
 });
