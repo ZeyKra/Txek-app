@@ -16,7 +16,12 @@ export default function TabTwoScreen() {
       {/* <Button title="Start Game" onPress={() => {}} /> */}
       <Link href="/(game)/game" style={styles.button} asChild>
         <Pressable>
-          <Text> Créer Game</Text>
+          <Text style={styles.button_text}> Créer Game</Text>
+        </Pressable>
+      </Link>
+      <Link href="/(game)/game" style={styles.button} asChild>
+        <Pressable>
+          <Text style={styles.button_text}> Charger Partie</Text>
         </Pressable>
       </Link>
     </View>
@@ -30,15 +35,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#841584",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    color: "white",
+    backgroundColor: '#E03C38',
+    padding: 15,
+    paddingHorizontal: 25,
+    borderRadius: 8,
+    alignItems: 'center',
+    color: 'white',
+    borderBottomWidth: 5,
+    borderColor: '#CB1612',
+    transform: [{ translateY: -4 }],
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: .3,
+    shadowRadius: 4,
+    elevation: 8,
+    marginVertical: 3, // Added margin between buttons
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  button_text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: 'FeatherBold',
+    color: 'white'
   },
   separator: {
     marginVertical: 30,

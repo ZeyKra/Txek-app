@@ -30,7 +30,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Tab One",
+          title: "Txek",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -49,13 +49,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="create-game"
         options={{
           title: "Creer Partie",
@@ -64,6 +57,13 @@ export default function TabLayout() {
           ),
         }}
       />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: "Paramètres",
+            tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
+          }}
+        />
     </Tabs>
   );
 }
