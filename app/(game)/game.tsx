@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     padding: 20,
     gap: 12,
     flex: 1,
-    alignItems: "center", // Center horizontal
-    justifyContent: "center", // Center vertical
+    alignItems: "center",
+    justifyContent: "center",
     minHeight: "100%",
   },
   input: {
@@ -80,17 +80,28 @@ const styles = StyleSheet.create({
     padding: 15,
     fontSize: 16,
     width: "90%",
-    maxWidth: 400, // Maximum width
+    maxWidth: 400,
     borderWidth: 5,
     borderColor: "red",
+    // 
+    // Outer shadow
     shadowColor: "#000",
-    transform: "preserve3d",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: 4,
+      height: 4,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOpacity: 1,
+    shadowRadius: 0, // Sharp shadow for cartoon effect
+    elevation: 8,
+    // Inner shadow effect
+    borderBottomWidth: 8,
+    borderRightWidth: 8,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
+    borderRightColor: 'rgba(0,0,0,0.1)',
+    // Inner shadow for cartoon effect
+    borderTopColor: 'rgba(255, 0, 0, 0.5)',
+    borderLeftColor: 'rgb(255, 0, 0)',
+    borderTopWidth: 2,
+    borderLeftWidth: 2
   }
 });

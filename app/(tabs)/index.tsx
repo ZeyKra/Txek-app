@@ -3,6 +3,7 @@ import { Button, StyleSheet } from "react-native";
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import { linkTo } from "expo-router/build/global-state/routing";
+import UserInput from "@/components/UserInput";
 
 export default function TabOneScreen() {
   return (
@@ -12,6 +13,12 @@ export default function TabOneScreen() {
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
+      />
+      <UserInput
+        placeholder="Entrez votre email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        onChangeText={(text) => console.log(text)}
       />
     </View>
   );
