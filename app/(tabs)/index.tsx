@@ -16,8 +16,9 @@ export default function TabOneScreen() {
       />
       <UserInput
         placeholder="Entrez votre email"
-        keyboardType="email-address"
         autoCapitalize="none"
+        backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
+        outlineColor="#6E48AD" outlineFadeColor="#4E3379"
         onChangeText={(text) => console.log(text)}
       />
     </View>

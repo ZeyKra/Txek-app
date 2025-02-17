@@ -7,7 +7,10 @@ import {
 } from 'react-native';
 
 interface UserInputProps extends TextInputProps {
+  backgroundColor?: string;
+  backgroundFadeColor?: string; 
   outlineColor?: string;
+  outlineFadeColor?: string;
 }
 
 const UserInput: React.FC<UserInputProps> = ({
@@ -15,30 +18,45 @@ const UserInput: React.FC<UserInputProps> = ({
   value,
   onChangeText,
   style = {},
-  outlineColor = 'yellow'
+  backgroundColor = 'white',
+  backgroundFadeColor = 'red',
+  outlineColor = 'yellow',
+  outlineFadeColor = 'red',
 }) => {
   return (
     <View style={styles.container}>
       {/* Main outline shadow layer */}
       <View style={[
         styles.outlineShadow,
-        { backgroundColor: 'red' }
+        { backgroundColor: outlineFadeColor }
       ]}>
         {/* Main outline layer */}
         <View style={[
           styles.outline,
           { borderColor: outlineColor }
         ]}>
-          {/* Inner white content with shadow */}
-          <View style={styles.innerShadow}>
+          {/* Mauvais code a cause d'un bug react native et les shadow buggés*/}
+            <View style={[{
+                  backgroundColor: backgroundColor,
+                  borderRadius: 8,
+                  marginBottom: 1.5,
+                  shadowColor: backgroundFadeColor,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity :11,
+                  shadowRadius: 0,
+                  elevation: 3,
+            }]}>
             <TextInput
-              style={[styles.input, style]}
+              style={[styles.input, [{ outline: 'none'},{ backgroundColor: backgroundColor }], style]}
               placeholder={placeholder}
               value={value}
               onChangeText={onChangeText}
               placeholderTextColor="#999"
             />
-          </View>
+            </View>
         </View>
       </View>
     </View>
@@ -64,12 +82,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 8,
     marginBottom: 1.5,
-    shadowColor: '#000',
+    shadowColor: 'red',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 1,
+    shadowOpacity :11,
     shadowRadius: 0,
     elevation: 3,
   },
