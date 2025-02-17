@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, TextInput } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { Link } from "expo-router";
 import { useState } from "react";
+import UserInput from "@/components/UserInput";
 
 export default function PlayerInput() {
   const [players, setPlayers] = useState<string[]>([""]);
@@ -19,7 +20,7 @@ export default function PlayerInput() {
     }
 
     // Si l'input selectioner et vider et ce n'est pas le premier ça la supprime
-    if (text.length == 0 && index !== 0 && index === players.length - 2) {
+    if (text.length === 0 && index !== 0) {
       newPlayers.splice(index, 1)
     }
 
@@ -32,9 +33,8 @@ export default function PlayerInput() {
       contentContainerStyle={styles.inputContainer}
     >
       {players.map((player : string, index: number) => (
-        <TextInput
+        <UserInput
           key={index}
-          style={styles.input}
           value={player}
           onChangeText={(text) => handleInputChange(text, index)}
           placeholder="Entrez le nom du joueur..."
@@ -42,6 +42,8 @@ export default function PlayerInput() {
           autoCapitalize="words"
           autoComplete="off"
           autoCorrect={false}
+          backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
+          outlineColor="#6E48AD" outlineFadeColor="#4E3379"
         />
       ))}
       <Pressable style={styles.button}>

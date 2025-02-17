@@ -1,8 +1,7 @@
-import { Button, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
+import { useColorScheme } from "@/components/useColorScheme";
 import { Text, View } from "@/components/Themed";
-import { linkTo } from "expo-router/build/global-state/routing";
 import UserInput from "@/components/UserInput";
 
 export default function TabOneScreen() {

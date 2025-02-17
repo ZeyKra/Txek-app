@@ -21,7 +21,7 @@ const UserInput: React.FC<UserInputProps> = ({
   backgroundColor = 'white',
   backgroundFadeColor = 'red',
   outlineColor = 'yellow',
-  outlineFadeColor = 'red',
+  outlineFadeColor = 'green',
 }) => {
   return (
     <View style={styles.container}>
