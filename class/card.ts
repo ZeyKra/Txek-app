@@ -1,4 +1,4 @@
-import { CardColor } from "../enums/CardColor.ts";
+import type { CardColor } from "../enums/CardColor.ts";
 import CardsValue from "../configs/cards-value.json" with { type: "json" };
 
 export class Card {
@@ -29,11 +29,11 @@ export class Card {
     getCardPoint() : number {
 
         if(this.name.length === 1) {
-            return parseInt(this.name);
+            return Number.parseInt(this.name);
         }
 
         let value = CardsValue[this.name]
-        if(this.name == "couronne") {
+        if(this.name === "couronne") {
             value = CardsValue[this.name][this.color]
         }
 

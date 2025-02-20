@@ -1,5 +1,5 @@
-import { GameSate } from "../enums/GameState.ts";
-import { txekPlayer } from "../interfaces/txekPlayer.ts";
+import type { GameSate } from "../enums/GameState.ts";
+import type { txekPlayer } from "../interfaces/txekPlayer.ts";
 import functions from "../functions/functions.ts";
 
 export class Game {
@@ -16,7 +16,7 @@ export class Game {
 
     countGame() : number[] {
         console.time('bench-countGame');
-        let game_points : number[] = [];
+        const game_points : number[] = [];
         this.players.map((player, i) => {
             console.time(`bench-${i}`);
             game_points.push(functions.countDeck(player));

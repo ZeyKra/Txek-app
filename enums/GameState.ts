@@ -1,7 +1,7 @@
 export enum GameSate {
-    Initialization,
-    Creation,
-    Waiting,
-    Ingame,
-    ENDED
+    Initialization = 0,
+    Creation = 1,
+    Waiting = 2,
+    Ingame = 3,
+    ENDED = 4
 }
