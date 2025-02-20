@@ -13,12 +13,12 @@ export default function TabTwoScreen() {
         darkColor="rgb(240, 50, 50)"
       />
       {/* <Button title="Start Game" onPress={() => {}} /> */}
-      <Link href="/(game)/game" style={styles.button} asChild>
+      <Link href="/(game)/player-select" style={styles.button} asChild>
         <Pressable>
           <Text style={styles.button_text}> Créer Game</Text>
         </Pressable>
       </Link>
-      <Link href="/(game)/game" style={styles.button} asChild>
+      <Link href="/(settings)/game-history" style={styles.button} asChild>
         <Pressable>
           <Text style={styles.button_text}> Charger Partie</Text>
         </Pressable>

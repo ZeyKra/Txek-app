@@ -1,3 +1,21 @@
+/**
+ * Page de sélection des joueurs permettant d'ajouter/supprimer des participants au jeu.
+ * 
+ * @component
+ * 
+ * @description
+ * Affiche une liste d'inputs permettant de saisir les noms des joueurs.
+ * - Ajoute automatiquement un nouveau champ quand le dernier est rempli
+ * - Supprime un champ quand il est vidé (sauf le premier)
+ * - Limite le nombre maximum de joueurs à 8
+ * 
+ * @state
+ * - players {string[]} - Tableau contenant les noms des joueurs
+ * 
+ * @returns Composant React Native avec un ScrollView contenant:
+ * - Des champs de saisie pour les noms des joueurs
+ * - Un bouton pour accéder à la page de jeu / comptage des points
+ */
 import { Pressable, ScrollView, StyleSheet, TextInput } from "react-native";
 
 import { Text, View } from "@/components/Themed";
@@ -5,7 +23,8 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import UserInput from "@/components/UserInput";
 
-export default function PlayerInput() {
+
+export default function PlayerSelectPage() {
   const [players, setPlayers] = useState<string[]>([""]);
 
   const handleInputChange = (text: string, index: number) => {
