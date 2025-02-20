@@ -4,7 +4,7 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { Text, View } from "@/components/Themed";
 import UserInput from "@/components/UserInput";
 
-export default function TabOneScreen() {
+export default function TabIndex() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>

@@ -3,7 +3,7 @@ import { Button, Pressable, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { Link } from "expo-router";
 
-export default function TabTwoScreen() {
+export default function TabCreateGame() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Créer une partie</Text>

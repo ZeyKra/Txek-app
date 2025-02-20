@@ -53,6 +53,7 @@ export default function PlayerSelectPage() {
     >
       {players.map((player : string, index: number) => (
         <UserInput
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           key={index}
           value={player}
           onChangeText={(text) => handleInputChange(text, index)}
