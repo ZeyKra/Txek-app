@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function exportLastGameSettings(match: TxekMatch) {
     
-    try {
+    try {   
         AsyncStorage.setItem('last_match_settings', JSON.stringify(match));
     } catch (e) {
         // saving error

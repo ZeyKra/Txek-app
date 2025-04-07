@@ -1,11 +1,61 @@
 import { Button, Pressable, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { importLastGameSettings } from "../backend/functions/storage";
+import type { TxekMatch } from "@/type/TxekMatch";
+import ConfirmationModal from "@/components/ConfirmationModal";
+import { useState } from "react";
 
 export default function TabCreateGame() {
+
+
+  const handleGameCreationButton = async () => {
+    const lastGameSettings = await importLastGameSettings();
+    if(lastGameSettings !== null && lastGameSettings !== undefined){
+      console.log("lastGameSettings", lastGameSettings); 
+      setIsModalVisible(true)
+      // Using useState directly in the component body
+      return;
+    }
+  
+    console.log("Aucune game trouvé créer une partie a zero"); // DEBUG
+    
+    router.push({pathname: "/(game)/game-settings"})
+  };
+
+  const handleLoadGameButton = async () => {
+    const lastGameSettings = await importLastGameSettings();
+    if(lastGameSettings !== null && lastGameSettings !== undefined){
+      console.log("lastGameSettings", lastGameSettings);
+      router.push({pathname: "/(game)/game-settings", params: { matchData: JSON.stringify(lastGameSettings) }})
+      return;
+    }
+  };
+
+
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  
+  const handleConfirm = () => {
+    setIsModalVisible(true);
+  };
+  
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
+
+
+      <ConfirmationModal
+        setIsVisible={() => setIsModalVisible(!isModalVisible)}
+        isVisibile={isModalVisible}
+        onConfirm={handleLoadGameButton}
+        onCancel={handleCancel}
+        message="Voulez-vous créer une nouvelle partie à partir des parametres de la partie précédente ?"
+      />
       <Text style={styles.title}>Créer une partie</Text>
       <View
         style={styles.separator}
@@ -13,11 +63,16 @@ export default function TabCreateGame() {
         darkColor="rgb(240, 50, 50)"
       />
       {/* <Button title="Start Game" onPress={() => {}} /> */}
-      <Link href="/(game)/game-settings" style={styles.button} asChild>
+   
+      {/* <Link href="/(game)/game-settings" style={styles.button} asChild>
         <Pressable>
           <Text style={styles.button_text}> Créer Game</Text>
         </Pressable>
-      </Link>
+      </Link>  */}
+      <Pressable onPress={() => handleGameCreationButton()}>
+        <Text > creer </Text>
+      </Pressable>
+        
       <Link href="/(settings)/game-history" style={styles.button} asChild>
         <Pressable>
           <Text style={styles.button_text}> Charger Partie</Text>

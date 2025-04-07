@@ -19,16 +19,37 @@
 import { KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Platform } from "react-native";
 
 import { Text } from "@/components/Themed";
-import { Link, router } from "expo-router";
-import { useState } from "react";
+import { Link, router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import UserInput from "@/components/UserInput";
 
-import { TxekMatch } from "@/type/TxekMatch";
+import type { TxekMatch } from "@/type/TxekMatch";
 import { createGame, createPlayer } from "@/app/backend/functions/functions";
 import { exportLastGameSettings } from "../backend/functions/storage";
 
-export default function GameSettingsPage() {
+export default function GameSettingsPage() {  
   const [players, setPlayers] = useState<string[]>([""]);
+  
+  const params = useLocalSearchParams() ?? {}; 
+  // Passage de param dans une autre variable a
+  const matchDataParam = params.matchData as string | undefined;
+
+  useEffect(() => {
+  
+    let matchSettings: TxekMatch | null = null;
+    try {
+      if (matchDataParam) {
+        matchSettings = JSON.parse(matchDataParam as string) as TxekMatch;
+        const playerList: string[] = matchSettings.players.map(player => player.name)
+        
+        setPlayers(playerList);
+      }
+    } catch (error) {
+      console.error('Erreur lors du parsing des données du match:', error);
+    }
+  }, [matchDataParam]);
+  
+
 
   const handleInputChange = (text: string, index: number) => {
     const newPlayers = [...players];
@@ -45,7 +66,7 @@ export default function GameSettingsPage() {
     if (text.length === 0 && index !== 0) {
       newPlayers.splice(index, 1)
     }
-
+    
     setPlayers(newPlayers);
   };
 
