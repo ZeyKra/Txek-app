@@ -1,3 +1,23 @@
+/**
+ * Documentation en français
+ * 
+ * TabCreateGame est un composant React qui gère la création et le chargement de parties.
+ * 
+ * Fonctions:
+ * - handleGameCreationButton: Gère la création d'une nouvelle partie
+ *   - Vérifie s'il existe des paramètres de jeu précédents
+ *   - Affiche une modal de confirmation si des paramètres existent
+ *   - Redirige vers la page de paramètres si aucun paramètre n'existe
+ * 
+ * - handleLoadGameButton: Gère le chargement d'une partie existante
+ *   - Récupère les derniers paramètres de jeu
+ *   - Redirige vers la page de paramètres avec les données
+ * 
+ * - handleConfirm/handleCancel: Gèrent l'affichage de la modal de confirmation
+ * 
+ * États:
+ * - isModalVisible: Contrôle l'affichage de la modal de confirmation
+ */
 import { Button, Pressable, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
@@ -10,7 +30,13 @@ import { useState } from "react";
 export default function TabCreateGame() {
 
 
-  const handleGameCreationButton = async () => {
+  /**
+   *
+   * fonction pour aller a la page de creation de game
+   * 
+   * return void
+  */
+  const handeCreateGameButton = async () => {
     const lastGameSettings = await importLastGameSettings();
     if(lastGameSettings !== null && lastGameSettings !== undefined){
       console.log("lastGameSettings", lastGameSettings); 
@@ -24,6 +50,13 @@ export default function TabCreateGame() {
     router.push({pathname: "/(game)/game-settings"})
   };
 
+  /**
+   *
+   * Fonction asynchrone qui gère la création d'une 
+   * nouvelle partie a partir des paramètres de la partie précédente.
+   * 
+   * return void
+  */
   const handleLoadGameButton = async () => {
     const lastGameSettings = await importLastGameSettings();
     if(lastGameSettings !== null && lastGameSettings !== undefined){
@@ -43,6 +76,7 @@ export default function TabCreateGame() {
   
   const handleCancel = () => {
     setIsModalVisible(false);
+    router.push({pathname: "/(game)/game-settings"})
   };
 
   return (
@@ -69,7 +103,7 @@ export default function TabCreateGame() {
           <Text style={styles.button_text}> Créer Game</Text>
         </Pressable>
       </Link>  */}
-      <Pressable onPress={() => handleGameCreationButton()}>
+      <Pressable onPress={() => handeCreateGameButton()}>
         <Text > creer </Text>
       </Pressable>
         

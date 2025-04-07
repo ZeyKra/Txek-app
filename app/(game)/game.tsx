@@ -29,11 +29,12 @@ export default function CountPointsPage() {
       <Text>Nombre de manches: {match.roundMax}</Text>
       <Text>Joueurs:</Text>
       {match.players.map((player, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Index utilisé pour la clé unique
         <View key={index} style={styles.playerRow}>
           <Text>{player.name} - Points: {player.points}</Text>
           <Pressable 
             style={styles.button}
-            onPress={() => {console.log(`Button pressed for ${player.name}`);}}
+            onPress={() => {console.log(`Button pressed for ${player.name}`);}} //DEBUG
           >
             <Text style={styles.buttonText}>+</Text>
           </Pressable>

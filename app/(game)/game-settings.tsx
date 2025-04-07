@@ -35,7 +35,6 @@ export default function GameSettingsPage() {
   const matchDataParam = params.matchData as string | undefined;
 
   useEffect(() => {
-  
     let matchSettings: TxekMatch | null = null;
     try {
       if (matchDataParam) {
