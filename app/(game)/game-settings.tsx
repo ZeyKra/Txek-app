@@ -63,10 +63,10 @@ export default function GameSettingsPage() {
     }
 
     // Si l'input selectioner et vider et ce n'est pas le premier ça la supprime
-    if (text.length === 0 && index !== 0) {
+    if (text.length === 0) {
       newPlayers.splice(index, 1)
     }
-    
+      
     setPlayers(newPlayers);
   };
 
