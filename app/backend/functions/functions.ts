@@ -12,8 +12,9 @@ function countDeck(player : TxekPlayer) {
     return count;
 }
 
-function createGame()  {
+function createGame(roundNumber : number) : TxekMatch  {
     const newMatch: TxekMatch = {
+        roundMax: roundNumber,
         createdAt: new Date(),
         players: [],
         rounds: [],
