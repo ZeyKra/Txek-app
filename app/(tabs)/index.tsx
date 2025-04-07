@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 
-import { useColorScheme } from "@/components/useColorScheme";
 import { Text, View } from "@/components/Themed";
 import UserInput from "@/components/UserInput";
 

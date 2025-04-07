@@ -18,7 +18,7 @@
  */
 import { KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Platform } from "react-native";
 
-import { Text } from "@/components/Themed";
+import { Text, View } from "@/components/Themed";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import UserInput from "@/components/UserInput";
@@ -29,6 +29,7 @@ import { exportLastGameSettings } from "../backend/functions/storage";
 
 export default function GameSettingsPage() {  
   const [players, setPlayers] = useState<string[]>([""]);
+  const [errors, setErrors] = useState<string[]>([]);
   
   const params = useLocalSearchParams() ?? {}; 
   // Passage de param dans une autre variable a
@@ -47,33 +48,53 @@ export default function GameSettingsPage() {
       console.error('Erreur lors du parsing des données du match:', error);
     }
   }, [matchDataParam]);
-  
 
+  const checkErrors = () => {
+    const newErrors: string[] = [];
+    players.map((player, index) => {
+      if (player.length > 15) {
+        newErrors[index] = "Le nom du joueur ne peut pas dépasser 15 caractères"; 
+      }else if(player.match(/[^a-zA-Z0-9\s]/)) {
+        newErrors[index] = "Le nom du joueur ne peut contenir que des lettres et des chiffres";       
+      } else {
+        newErrors[index] = "";
+      }
+    });
+    return newErrors;
+  };
 
   const handleInputChange = (text: string, index: number) => {
     const newPlayers = [...players];
+    const newErrors = [...errors];
     newPlayers[index] = text;
-
+    
     // Ajout d'un nouvel input field si le denier est remplit
     if (text.length > 0 && index === players.length - 1) {
       if (players.length < 8) {
         newPlayers.push("");
+        newErrors.push("");
       }
     }
 
     // Si l'input selectioner et vider et ce n'est pas le premier ça la supprime
     if (text.length === 0) {
-      newPlayers.splice(index, 1)
+      newPlayers.splice(index, 1);
+      newErrors.splice(index, 1);
     }
       
     setPlayers(newPlayers);
+    setErrors(Array.from(checkErrors()));
   };
 
   const handleStartGame = () => {
     // Filtrer les joueurs vides
     const validPlayers = players.filter(name => name.trim() !== "");
+    const newErrors = [...players].map(player => 
+      player.trim() === "" ? "Le nom du joueur ne peut pas être vide" : ""
+    );
     
     if (validPlayers.length < 2) {
+      setErrors(newErrors);
       alert("Il faut au moins 2 joueurs pour commencer une partie");
       return;
     }
@@ -105,19 +126,23 @@ export default function GameSettingsPage() {
         contentContainerStyle={styles.inputContainer}
       >
         {players.map((player : string, index: number) => (
-          <UserInput
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-            key={index}
-            value={player}
-            onChangeText={(text) => handleInputChange(text, index)}
-            placeholder="Entrez le nom du joueur..."
-            placeholderTextColor="rgba(255, 255, 255, 0.7)"
-            autoCapitalize="words"
-            autoComplete="off"
-            autoCorrect={false}
-            backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
-            outlineColor="#6E48AD" outlineFadeColor="#4E3379"
-          />
+
+          <View key={index} style={styles.inputWrapper}>
+            <UserInput
+              value={player}
+              onChangeText={(text) => handleInputChange(text, index)}
+              placeholder="Entrez le nom du joueur..."
+              placeholderTextColor="rgba(255, 255, 255, 0.7)"
+              autoCapitalize="words"
+              autoComplete="off"
+              autoCorrect={false}
+              backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
+              outlineColor="#6E48AD" outlineFadeColor="#4E3379"
+            />
+            {errors[index] ? (
+              <Text style={styles.errorText}>{errors[index]}</Text>
+            ) : null}
+          </View>
         ))}
         <Pressable style={styles.button} onPress={handleStartGame}>
           <Text style={styles.buttonText}>Commencer la partie</Text>
@@ -126,6 +151,7 @@ export default function GameSettingsPage() {
     </KeyboardAvoidingView>
   );
 }
+
 const styles = StyleSheet.create({
   buttonText: {
     color: "white",
@@ -181,5 +207,16 @@ const styles = StyleSheet.create({
     borderLeftColor: 'rgb(255, 0, 0)',
     borderTopWidth: 2,
     borderLeftWidth: 2
+  },
+  inputWrapper: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+    alignSelf: 'flex-start',
+    marginLeft: '5%',
   }
 });
