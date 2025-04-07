@@ -22,6 +22,13 @@ async function importLastGameSettings() : Promise<TxekMatch | undefined>  {
     }
 }
 
-// TODO: ClearLastGameSettings
+function ClearLastGameSettings() : void {
+    try {
+        AsyncStorage.removeItem('last_match_settings');
+    }  catch (e) {
+        // error reading value
+        throw new Error("Erreur lors de la suppretion des paramètres de la partie (last_match_settings)"); 
+    }
+}
 
-export { exportLastGameSettings, importLastGameSettings }
+export { exportLastGameSettings, importLastGameSettings, ClearLastGameSettings }
