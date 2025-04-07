@@ -13,7 +13,7 @@ export default function TabCreateGame() {
         darkColor="rgb(240, 50, 50)"
       />
       {/* <Button title="Start Game" onPress={() => {}} /> */}
-      <Link href="/(game)/player-select" style={styles.button} asChild>
+      <Link href="/(game)/game-settings" style={styles.button} asChild>
         <Pressable>
           <Text style={styles.button_text}> Créer Game</Text>
         </Pressable>

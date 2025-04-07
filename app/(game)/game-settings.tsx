@@ -24,7 +24,7 @@ import { useState } from "react";
 import UserInput from "@/components/UserInput";
 
 
-export default function PlayerSelectPage() {
+export default function GameSettingsPage() {
   const [players, setPlayers] = useState<string[]>([""]);
 
   const handleInputChange = (text: string, index: number) => {
