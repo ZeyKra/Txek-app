@@ -30,7 +30,7 @@ import { exportLastGameSettings } from "../backend/functions/storage";
 export default function GameSettingsPage() {  
   const [players, setPlayers] = useState<string[]>([""]);
   const [errors, setErrors] = useState<string[]>([]);
-  
+
   const params = useLocalSearchParams() ?? {}; 
   // Passage de param dans une autre variable a
   const matchDataParam = params.matchData as string | undefined;
@@ -56,6 +56,8 @@ export default function GameSettingsPage() {
         newErrors[index] = "Le nom du joueur ne peut pas dépasser 15 caractères"; 
       }else if(player.match(/[^a-zA-Z0-9\s]/)) {
         newErrors[index] = "Le nom du joueur ne peut contenir que des lettres et des chiffres";       
+      } else if (player.trim() !== "" && players.findIndex((p, i) => p.trim().toLowerCase() === player.trim().toLowerCase() && i !== index) !== -1) {
+        newErrors[index] = "Ce nom de joueur existe déjà";
       } else {
         newErrors[index] = "";
       }
@@ -65,25 +67,43 @@ export default function GameSettingsPage() {
 
   const handleInputChange = (text: string, index: number) => {
     const newPlayers = [...players];
-    const newErrors = [...errors];
     newPlayers[index] = text;
     
     // Ajout d'un nouvel input field si le denier est remplit
     if (text.length > 0 && index === players.length - 1) {
       if (players.length < 8) {
         newPlayers.push("");
-        newErrors.push("");
       }
     }
 
     // Si l'input selectioner et vider et ce n'est pas le premier ça la supprime
     if (text.length === 0) {
       newPlayers.splice(index, 1);
-      newErrors.splice(index, 1);
     }
-      
+    
+    // Update players first, then check errors with the updated array
     setPlayers(newPlayers);
-    setErrors(Array.from(checkErrors()));
+    
+    // Use the newPlayers array directly for error checking instead of relying on state
+    const checkErrorsWithNewPlayers = () => {
+      const newErrors: string[] = [];
+      newPlayers.map((player, idx) => {
+        if (player.length > 15) {
+          newErrors[idx] = "Le nom du joueur ne peut pas dépasser 15 caractères"; 
+        } else if(player.match(/[^a-zA-Z0-9\s]/)) {
+          newErrors[idx] = "Le nom du joueur ne peut contenir que des lettres et des chiffres";       
+        } else if (player.trim() !== "" && newPlayers.findIndex((p, i) => 
+          p.trim().toLowerCase() === player.trim().toLowerCase() && i !== idx) !== -1) {
+          newErrors[idx] = "Ce nom de joueur existe déjà";
+        } else {
+          newErrors[idx] = "";
+        }
+      });
+      return newErrors;
+    };
+    
+    // Set errors based on the new players array we just created
+    setErrors(checkErrorsWithNewPlayers());
   };
 
   const handleStartGame = () => {
@@ -126,7 +146,7 @@ export default function GameSettingsPage() {
         contentContainerStyle={styles.inputContainer}
       >
         {players.map((player : string, index: number) => (
-
+          // biome-ignore lint/suspicious/noArrayIndexKey: Index utilisé pour la clé unique
           <View key={index} style={styles.inputWrapper}>
             <UserInput
               value={player}
