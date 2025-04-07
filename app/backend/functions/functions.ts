@@ -38,7 +38,8 @@ function createRound() : TxekRound {
     return newRound;
 }
 
-function initGame(match : TxekMatch, players: string[]) {
+function initGame(roundNumber: number,players: string[]) {
+    const match: TxekMatch = createGame(roundNumber);
     if (players.length < 2) {
         throw new Error("Il faut au moins 2 joueurs");
     }
@@ -48,4 +49,4 @@ function initGame(match : TxekMatch, players: string[]) {
     
 }
 
-export default { countDeck, createGame }
+export { countDeck, createGame, createPlayer, createRound, initGame }

@@ -16,13 +16,16 @@
  * - Des champs de saisie pour les noms des joueurs
  * - Un bouton pour accéder à la page de jeu / comptage des points
  */
-import { Pressable, ScrollView, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Platform } from "react-native";
 
 import { Text } from "@/components/Themed";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import UserInput from "@/components/UserInput";
 
+import { TxekMatch } from "@/type/TxekMatch";
+import { createGame, createPlayer } from "@/app/backend/functions/functions";
+import { exportLastGameSettings } from "../backend/functions/storage";
 
 export default function GameSettingsPage() {
   const [players, setPlayers] = useState<string[]>([""]);
@@ -46,36 +49,69 @@ export default function GameSettingsPage() {
     setPlayers(newPlayers);
   };
 
+  const handleStartGame = () => {
+    // Filtrer les joueurs vides
+    const validPlayers = players.filter(name => name.trim() !== "");
+    
+    if (validPlayers.length < 2) {
+      alert("Il faut au moins 2 joueurs pour commencer une partie");
+      return;
+    }
+    
+    try {
+      // Créer le jeu avec les joueurs valides
+      const match = createGame(5);
+      validPlayers.map(player => {
+        match.players.push(createPlayer(player));
+      });
+      
+      exportLastGameSettings(match);
+      // Naviguer vers la page suivante avec les données du match
+      router.push({
+        pathname: "/(game)/game",
+        params: { matchData: JSON.stringify(match) }
+      });
+    } catch (error) {
+      throw new Error("Erreur lors de la création du jeu: ");
+    }
+  };
+
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.inputContainer}
-    >
-      {players.map((player : string, index: number) => (
-        <UserInput
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          key={index}
-          value={player}
-          onChangeText={(text) => handleInputChange(text, index)}
-          placeholder="Entrez le nom du joueur..."
-          placeholderTextColor="rgba(255, 255, 255, 0.7)"
-          autoCapitalize="words"
-          autoComplete="off"
-          autoCorrect={false}
-          backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
-          outlineColor="#6E48AD" outlineFadeColor="#4E3379"
-        />
-      ))}
-      <Pressable style={styles.button}>
-        <Link href="/(game)/count-points">
-          <Text> Game </Text>
-        </Link>
-      </Pressable>
-    </ScrollView>
+    <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.inputContainer}
+      >
+        {players.map((player : string, index: number) => (
+          <UserInput
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            key={index}
+            value={player}
+            onChangeText={(text) => handleInputChange(text, index)}
+            placeholder="Entrez le nom du joueur..."
+            placeholderTextColor="rgba(255, 255, 255, 0.7)"
+            autoCapitalize="words"
+            autoComplete="off"
+            autoCorrect={false}
+            backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
+            outlineColor="#6E48AD" outlineFadeColor="#4E3379"
+          />
+        ))}
+        <Pressable style={styles.button} onPress={handleStartGame}>
+          <Text style={styles.buttonText}>Commencer la partie</Text>
+        </Pressable>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
