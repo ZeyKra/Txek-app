@@ -22,8 +22,8 @@ import { Button, Pressable, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 import { Link, router } from "expo-router";
-import { ClearLastGameSettings, importLastGameSettings } from "../backend/functions/storage";
-import type { TxekMatch } from "@/type/TxekMatch";
+import { importLastGameSettings } from "../backend/functions/storage";
+import  TxekMatch from "@/models/TxekMatch";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
 
@@ -76,7 +76,6 @@ export default function TabCreateGame() {
   
   const handleCancel = () => {
     setIsModalVisible(false);
-    ClearLastGameSettings();
     router.push({pathname: "/(game)/game-settings"})
   };
 

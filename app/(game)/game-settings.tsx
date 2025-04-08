@@ -23,7 +23,7 @@ import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import UserInput from "@/components/UserInput";
 
-import type { TxekMatch } from "@/type/TxekMatch";
+import TxekMatch from "@/models/TxekMatch";
 import { createGame, createPlayer } from "@/app/backend/functions/functions";
 import { exportLastGameSettings } from "../backend/functions/storage";
 
@@ -121,7 +121,7 @@ export default function GameSettingsPage() {
     
     try {
       // Créer le jeu avec les joueurs valides
-      const match = createGame(5);
+      const match = new TxekMatch(5) //TODO: Changer avec l'objet match
       validPlayers.map(player => {
         match.players.push(createPlayer(player));
       });

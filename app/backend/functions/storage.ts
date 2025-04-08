@@ -1,4 +1,4 @@
-import type { TxekMatch } from "@/type/TxekMatch";
+import type TxekMatch from "@/models/TxekMatch";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function exportLastGameSettings(match: TxekMatch) {    
@@ -22,13 +22,6 @@ async function importLastGameSettings() : Promise<TxekMatch | undefined>  {
     }
 }
 
-function ClearLastGameSettings() : void {
-    try {
-        AsyncStorage.removeItem('last_match_settings');
-    }  catch (e) {
-        // error reading value
-        throw new Error("Erreur lors de la suppretion des paramètres de la partie (last_match_settings)"); 
-    }
-}
+// TODO: ClearLastGameSettings
 
-export { exportLastGameSettings, importLastGameSettings, ClearLastGameSettings }
+export { exportLastGameSettings, importLastGameSettings }
