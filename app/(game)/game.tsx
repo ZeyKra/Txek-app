@@ -1,15 +1,20 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import type { TxekMatch } from '@/type/TxekMatch';
+import { router, useLocalSearchParams } from 'expo-router';
+import TxekMatch from '@/models/TxekMatch';
+import type { TxekPlayer } from '@/types/TxekPlayer';
+import type { TxekRound } from '@/types/TxekRound';
 
 export default function CountPointsPage() {
   const params = useLocalSearchParams();
-  
+  const parsedMatchData: TxekMatch = JSON.parse(params.matchData as string)
+  let currentRound: TxekRound;
   // Récupérer et parser les données du match
-  let match: TxekMatch | null = null;
+  let match: TxekMatch;
   try {
     if (params.matchData) {
-      match = JSON.parse(params.matchData as string) as TxekMatch;
+      match = new TxekMatch(parsedMatchData.roundMax);
+      Object.assign(match, parsedMatchData);
+      currentRound = match.getCurrentRound();
     }
   } catch (error) {
     console.error('Erreur lors du parsing des données du match:', error);
@@ -23,6 +28,15 @@ export default function CountPointsPage() {
     );
   }
 
+  const handleCountPointsButton = (player: TxekPlayer, match: TxekMatch) => {
+    // TODO: Logique pour le comptage des points
+    
+    router.push({
+      pathname: '/(game)/count-points',
+      params: { matchData: JSON.stringify(match), player: JSON.stringify(player) }, 
+    })
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Comptage des points</Text>
@@ -31,10 +45,13 @@ export default function CountPointsPage() {
       {match.players.map((player, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: Index utilisé pour la clé unique
         <View key={index} style={styles.playerRow}>
-          <Text>{player.name} - Points: {player.points}</Text>
+          <Text>{player.name} - Points: {player.points} - Deck: {currentRound[player.name]}</Text>
           <Pressable 
             style={styles.button}
-            onPress={() => {console.log(`Button pressed for ${player.name}`);}} //DEBUG
+            onPress={() => {
+              console.log(`Button pressed for ${player.name}`);
+              handleCountPointsButton(player, match);
+            }} //DEBUG
           >
             <Text style={styles.buttonText}>+</Text>
           </Pressable>

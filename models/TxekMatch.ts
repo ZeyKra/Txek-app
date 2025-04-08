@@ -7,32 +7,42 @@ export default class TxekMatch {
     players: TxekPlayer[];
     rounds: TxekRound[];
     winner?: TxekPlayer;
-
+    
     constructor(roundMax: number) {
         this.roundMax = roundMax;
         this.createdAt = new Date();
         this.players = [];
         this.rounds = [];
     }
-
+    
     getRound() {
         return this.rounds.length + 1;
     }
-
+    
     getWinner() {
         return this.winner; 
     }
-
+    
     setWinner(winner: TxekPlayer) {
         this.winner = winner;
     }
-
+    
     getRounds() {
         return this.rounds; 
     }
-
+    
     getCurrentRound() {
         return this.rounds[this.rounds.length - 1];
     }
-
+    
+    updateCurrentRound(round: TxekRound) {
+        this.rounds[this.rounds.length - 1] = round;
+    }
+    
+    createNewRound() {
+        const newRound: TxekRound = {
+            createdAt: new Date(),
+        };
+        this.rounds.push(newRound);
+    }
 }

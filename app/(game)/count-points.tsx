@@ -1,5 +1,9 @@
 "use client"
 
+import TxekMatch from "@/models/TxekMatch"
+import type { TxekPlayer } from "@/types/TxekPlayer"
+import type { TxekRound } from "@/types/TxekRound"
+import { router, useLocalSearchParams } from "expo-router"
 import { useState, useRef, useEffect } from "react"
 import {
   View,
@@ -460,6 +464,22 @@ const countPointPage = () => {
   const [activeColor, setActiveColor] = useState("red") // Default color
   const [modalVisible, setModalVisible] = useState(false)
 
+  const params = useLocalSearchParams();
+  
+  // Récupérer et parser les données du match
+  let match: TxekMatch ;
+  let player: TxekPlayer ;
+  try {
+    if (params.matchData && params.player) {
+      const paresedMatchData = JSON.parse(params.matchData as string);
+      match = new TxekMatch(paresedMatchData.roundMax);
+      Object.assign(match, paresedMatchData);
+      player = JSON.parse(params.player as string) as TxekPlayer;
+    }
+  } catch (error) {
+    console.error('Erreur lors du parsing des données du match:', error);
+  }
+
   // Update styles when orientation changes
   useEffect(() => {
     const updateLayout = () => {
@@ -518,6 +538,40 @@ const countPointPage = () => {
     setSelectedCards([])
   }
 
+  const converSelectedCardsToStringList = (cardList: []) => {
+    const parsedCardList: string[] = [];
+    cardList.map((card) => {
+      parsedCardList.push(`${(card as {color: string; value: string}).color}-${(card as {color: string; value: string}).value}`);
+    })
+    return parsedCardList
+  }
+
+  const handleConfirm = () => {
+    // Handle confirmation logic here
+    console.log("Selected Cards:", selectedCards)
+
+    const currentRound: TxekRound = match.getCurrentRound();
+    console.log("currentround ", currentRound);
+    
+    if (currentRound) {
+      currentRound[player.name] = converSelectedCardsToStringList(selectedCards as []);
+    }
+
+    match.updateCurrentRound(currentRound);
+
+    console.log("Updated Match:", match); //DEBUG 
+    console.log("Current Round:", match.getCurrentRound()); //DEBUG
+    
+    router.push({
+      pathname: "/(game)/game",
+      params: {
+        matchData: JSON.stringify(match),
+        player: JSON.stringify(player), 
+      }
+    })
+
+  }
+
   // Calculate appropriate height for selected cards list based on screen size
   const screenHeight = Dimensions.get("window").height
   const selectedCardsMaxHeight = screenHeight * 0.15 // 15% of screen height
@@ -548,6 +602,9 @@ const countPointPage = () => {
 
         <TouchableOpacity style={styles.selectCardsButton} onPress={showKeyboard}>
           <Text style={styles.selectCardsButtonText}>Select Cards</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.selectCardsButton} onPress={handleConfirm}>
+          <Text style={styles.selectCardsButtonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
 

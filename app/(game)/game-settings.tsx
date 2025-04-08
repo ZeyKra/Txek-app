@@ -125,7 +125,8 @@ export default function GameSettingsPage() {
       validPlayers.map(player => {
         match.players.push(createPlayer(player));
       });
-      
+
+      match.createNewRound();
       exportLastGameSettings(match);
       // Naviguer vers la page suivante avec les données du match
       router.push({
