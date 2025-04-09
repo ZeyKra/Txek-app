@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 import UserInput from "@/components/UserInput";
+import TxekButton from "@/components/TxekButton";
 
 export default function TabIndex() {
   return (
@@ -18,6 +19,18 @@ export default function TabIndex() {
         backgroundColor="#fff" backgroundFadeColor="#B7AEAE"
         outlineColor="#6E48AD" outlineFadeColor="#4E3379"
         onChangeText={(text) => console.log(text)}
+      />
+      <TxekButton 
+        text="TxekButton"
+        buttonColor="#6E48AD" buttonShadowColor="#4E3379"
+        onPress={ () => { console.log("Custom button pressed");
+        }} 
+      />
+      <TxekButton 
+        text="Disabled"
+        variant="primary" 
+        onPress={ () => { console.log("Custom button pressed");
+        }} 
       />
     </View>
   );
@@ -38,4 +51,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  
 });
+
+
