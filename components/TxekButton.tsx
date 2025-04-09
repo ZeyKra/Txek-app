@@ -6,6 +6,7 @@ interface TxekButtonProps {
   text: string;
   variant?: 'primary' | 'secondary' | 'danger';
   size?: 'small' | 'medium' | 'large';
+  custom?: boolean;
   disabled?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
@@ -32,7 +33,7 @@ export const TxekButton = ({
         styles.button,
         styles[variant],
         styles[size],
-        { backgroundColor: buttonColor, borderColor: buttonShadowColor },
+        (buttonColor && buttonShadowColor) && { backgroundColor: buttonColor, borderColor: buttonShadowColor },
         disabled && styles.disabled,
         style,
       ]}
