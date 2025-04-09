@@ -1,10 +1,12 @@
+import { useTheme } from '@react-navigation/native';
 import type React from 'react';
 import { 
   TextInput, 
   StyleSheet, 
   View, 
-  type TextInputProps 
+  useColorScheme
 } from 'react-native';
+import type { TextInputProps } from 'react-native';
 
 interface UserInputProps extends TextInputProps {
   backgroundColor?: string;

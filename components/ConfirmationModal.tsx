@@ -1,5 +1,6 @@
-import { Alert, Modal, Pressable, StyleSheet, Text } from "react-native";
-import { View } from "./Themed";
+import { Modal, StyleSheet, Text } from "react-native";
+import { View } from "@/components/Themed";
+import TxekButton from "./TxekButton";
 
 type ConfirmationModalProps = {
   isVisibile: boolean;
@@ -23,22 +24,23 @@ export default function ConfirmationModal(props: ConfirmationModalProps){
             <View style={styles.modalView}>
                 <Text style={styles.modalText} numberOfLines={3} ellipsizeMode="tail">{props.message}</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                    <Pressable
-                        style={[styles.button, styles.buttonOpen]}
+                    <TxekButton
                         onPress={() => {
-                            props.onConfirm();
-                            props.setIsVisible(false);
-                        }}>
-                        <Text style={styles.textStyle}>{props.confirmText ? props.confirmText : "Oui"}</Text>
-                    </Pressable>
-                    <Pressable
-                        style={[styles.button, styles.buttonClose]}
+                          props.onConfirm();
+                          props.setIsVisible(false);
+                        }}
+                        text={props.confirmText ? props.confirmText : "Oui"}
+                        variant="primary"
+                        buttonColor="#56BB4F" buttonShadowColor="#40853B"
+                    />
+                    <TxekButton
                         onPress={() => {
-                            props.onCancel();
-                            props.setIsVisible(false);
-                        }}>
-                        <Text style={styles.textStyle}>{props.declineText ? props.declineText : "Non"}</Text>
-                    </Pressable>
+                          props.onCancel();
+                          props.setIsVisible(false);
+                        }}
+                        text={props.declineText ? props.declineText : "Non"}
+                        variant="primary"
+                    />
                 </View>
             </View>
           </View>
