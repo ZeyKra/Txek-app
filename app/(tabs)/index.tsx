@@ -27,8 +27,8 @@ export default function TabIndex() {
         }} 
       />
       <TxekButton 
-        text="Test"
-        variant="primary" 
+        text="Bouton"
+        variant="primary"
         onPress={ () => { console.log("Custom button pressed");
         }} 
       />

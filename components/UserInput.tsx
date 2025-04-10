@@ -26,7 +26,7 @@ const UserInput: React.FC<UserInputProps> = ({
   outlineFadeColor = 'green',
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='UserInput'>
       {/* Main outline shadow layer */}
       <View style={[
         styles.outlineShadow,
@@ -51,7 +51,7 @@ const UserInput: React.FC<UserInputProps> = ({
                   shadowRadius: 0,
                   elevation: 3,
             }]}>
-            <TextInput
+            <TextInput testID='UserInput-TextInput'
               style={[styles.input, [{ outline: 'none'},{ backgroundColor: backgroundColor }], style]}
               placeholder={placeholder}
               value={value}

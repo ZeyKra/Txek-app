@@ -27,6 +27,7 @@ export const TxekButton = ({
 }: TxekButtonProps) => {
   return (
     <TouchableOpacity
+      testID='TxekButton'
       onPress={onPress}
       disabled={disabled}
       style={[
