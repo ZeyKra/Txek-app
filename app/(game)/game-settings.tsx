@@ -19,13 +19,13 @@
 import { KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Platform } from "react-native";
 
 import { Text, View } from "@/components/Themed";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import UserInput from "@/components/UserInput";
 
 import TxekMatch from "@/models/TxekMatch";
-import { createGame, createPlayer } from "@/app/backend/functions/functions";
-import { exportLastGameSettings } from "../backend/functions/storage";
+import { createPlayer } from "@/app/backend/functions/functions";
+import { exportLastGameSettings } from "../backend/storage"
 
 export default function GameSettingsPage() {  
   const [players, setPlayers] = useState<string[]>([""]);

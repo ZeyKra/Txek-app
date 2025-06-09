@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import TxekMatch from '@/models/TxekMatch';
 import type { TxekPlayer } from '@/types/TxekPlayer';
 import type { TxekRound } from '@/types/TxekRound';
+import TxekButton from '@/components/TxekButton';
 
 export default function CountPointsPage() {
   const params = useLocalSearchParams();
@@ -15,6 +16,9 @@ export default function CountPointsPage() {
       match = new TxekMatch(parsedMatchData.roundMax);
       Object.assign(match, parsedMatchData);
       currentRound = match.getCurrentRound();
+      //DEBUG
+      console.log('Match récupéré:', match);
+      console.log('Round récupéré:', currentRound);
     }
   } catch (error) {
     console.error('Erreur lors du parsing des données du match:', error);
@@ -37,9 +41,18 @@ export default function CountPointsPage() {
     })
   };
 
+  const handleNextRoundButton = () => {
+    match.createNewRound();
+
+    router.push({
+      pathname: '/(game)/game',
+      params: { matchData: JSON.stringify(match) },
+    })
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Comptage des points</Text>
+      <Text style={styles.title}>Round {match.getCurrentRoundIndex() + 1} </Text>
       <Text>Nombre de manches: {match.roundMax}</Text>
       <Text>Joueurs:</Text>
       {match.players.map((player, index) => (
@@ -57,6 +70,11 @@ export default function CountPointsPage() {
           </Pressable>
         </View>
       ))}
+      <TxekButton 
+        text="Manche suivante"
+        variant="primary"
+        onPress={ () => { handleNextRoundButton(); }} 
+      />
     </View>
   );
 }

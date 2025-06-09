@@ -18,12 +18,11 @@
  * États:
  * - isModalVisible: Contrôle l'affichage de la modal de confirmation
  */
-import { Button, Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 import { Link, router } from "expo-router";
-import { importLastGameSettings } from "../backend/functions/storage";
-import  TxekMatch from "@/models/TxekMatch";
+import { importLastGameSettings } from "../backend/storage"
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
 

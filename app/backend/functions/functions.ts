@@ -1,6 +1,6 @@
-import type { TxekMatch } from "@/type/TxekMatch";
-import type { TxekPlayer } from "@/type/TxekPlayer";
-import type { TxekRound } from "@/type/TxekRound";
+import type { TxekMatch } from "@/models/TxekMatch";
+import type { TxekPlayer } from "@/types/TxekPlayer";
+import type { TxekRound } from "@/types/TxekRound";
 
 function countDeck(player : TxekPlayer) {
     let count = 0;
