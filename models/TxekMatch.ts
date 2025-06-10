@@ -1,3 +1,4 @@
+import { countDeck } from "@/app/backend/deck";
 import type { TxekPlayer } from "@/types/TxekPlayer";
 import type { TxekRound } from "@/types/TxekRound";
 
@@ -39,6 +40,20 @@ export default class TxekMatch {
 
     getCurrentRoundIndex() : number {
         return this.rounds.length - 1;
+    }
+
+    updatePlayerPoints(player : TxekPlayer) {
+        const playerIndex = this.players.findIndex(p => p.name === player.name);
+        if (playerIndex !== -1) {
+
+            let points = 0;
+            this.getRounds().map(round => {
+                points += countDeck(round[player.name] as string[]);
+            })
+            
+            this.players[playerIndex].points = points;
+        }
+
     }
     
     updateCurrentRound(round: TxekRound) {

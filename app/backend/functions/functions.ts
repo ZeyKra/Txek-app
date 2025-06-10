@@ -2,16 +2,6 @@ import type { TxekMatch } from "@/models/TxekMatch";
 import type { TxekPlayer } from "@/types/TxekPlayer";
 import type { TxekRound } from "@/types/TxekRound";
 
-function countDeck(player : TxekPlayer) {
-    let count = 0;
-    player.deck.map(carte => {
-        if (carte.length < 2) {
-            count += Number.parseInt(carte);
-        }    
-    })
-    return count;
-}
-
 function createGame(roundNumber : number) : TxekMatch  {
     const newMatch: TxekMatch = {
         roundMax: roundNumber,
@@ -49,4 +39,4 @@ function initGame(roundNumber: number,players: string[]) {
     
 }
 
-export { countDeck, createGame, createPlayer, createRound, initGame }
+export { createGame, createPlayer, createRound, initGame }

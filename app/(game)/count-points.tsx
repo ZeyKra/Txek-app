@@ -23,6 +23,7 @@ import {
   UIManager,
 } from "react-native"
 import Svg, { Circle, Path } from "react-native-svg"
+import { countDeck } from "@/app/backend/deck"
 
 // Enable LayoutAnimation for Android
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -309,7 +310,7 @@ const SelectedCardsList = ({ cards, onRemoveCard, maxHeight }) => {
   if (cards.length === 0) {
     return (
       <View style={[styles.selectedCardsListContainer, { maxHeight }]}>
-        <Text style={styles.noCardsText}>No cards selected</Text>
+        <Text style={styles.noCardsText}>Aucune cartes selectionées</Text>
       </View>
     )
   }
@@ -471,9 +472,9 @@ const countPointPage = () => {
   let player: TxekPlayer ;
   try {
     if (params.matchData && params.player) {
-      const paresedMatchData = JSON.parse(params.matchData as string);
-      match = new TxekMatch(paresedMatchData.roundMax);
-      Object.assign(match, paresedMatchData);
+      const parsedMatchData = JSON.parse(params.matchData as string);
+      match = new TxekMatch(parsedMatchData.roundMax);
+      Object.assign(match, parsedMatchData);
       player = JSON.parse(params.player as string) as TxekPlayer;
     }
   } catch (error) {
@@ -548,15 +549,16 @@ const countPointPage = () => {
 
   const handleConfirm = () => {
     // Handle confirmation logic here
-    console.log("Selected Cards:", selectedCards)
+    console.log("Selected Cards:", selectedCards) 
 
-    const currentRound: TxekRound = match.getCurrentRound();
-    console.log("currentround ", currentRound);
+    const currentRound: TxekRound = match.getCurrentRound(); 
+    console.log("currentround ", currentRound);  //DEBUG 
     
     if (currentRound) {
       currentRound[player.name] = converSelectedCardsToStringList(selectedCards as []);
     }
-
+    
+    match.updatePlayerPoints(player);
     match.updateCurrentRound(currentRound);
 
     console.log("Updated Match:", match); //DEBUG 
@@ -579,14 +581,14 @@ const countPointPage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>UNO Card Selector</Text>
+        <Text style={styles.title}>Selecteur de cartes Txek</Text>
 
         <Text style={styles.subtitle}>Select cards from your deck</Text>
 
         {/* Selected Cards Horizontal List */}
         <View style={styles.selectedCardsSection}>
           <View style={styles.selectedCardsTitleRow}>
-            <Text style={styles.selectedCardsTitle}>Selected Cards</Text>
+            <Text style={styles.selectedCardsTitle}>Selectioné les cartes</Text>
             <View style={styles.selectedCardsActions}>
               <Text style={styles.selectedCardsCount}>{selectedCards.length}</Text>
               {selectedCards.length > 0 && (
@@ -601,10 +603,10 @@ const countPointPage = () => {
         </View>
 
         <TouchableOpacity style={styles.selectCardsButton} onPress={showKeyboard}>
-          <Text style={styles.selectCardsButtonText}>Select Cards</Text>
+          <Text style={styles.selectCardsButtonText}>Selection des cartes</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.selectCardsButton} onPress={handleConfirm}>
-          <Text style={styles.selectCardsButtonText}>Confirm</Text>
+          <Text style={styles.selectCardsButtonText}>confirmer</Text>
         </TouchableOpacity>
       </View>
 
