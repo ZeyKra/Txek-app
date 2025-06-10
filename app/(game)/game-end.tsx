@@ -1,24 +1,18 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import TxekMatch from '@/models/TxekMatch';
-import type { TxekPlayer } from '@/types/TxekPlayer';
-import type { TxekRound } from '@/types/TxekRound';
+import TxekMatch from '@/models/TxekMatch';;
 import TxekButton from '@/components/TxekButton';
 
-export default function CountPointsPage() {
+export default function EndGamePage() {
   const params = useLocalSearchParams();
   const parsedMatchData: TxekMatch = JSON.parse(params.matchData as string)
-  let currentRound: TxekRound;
   // Récupérer et parser les données du match
   let match: TxekMatch;
   try {
     if (params.matchData) {
       match = new TxekMatch(parsedMatchData.roundMax);
       Object.assign(match, parsedMatchData);
-      currentRound = match.getCurrentRound();
       //DEBUG
-      console.log('Match récupéré:', match);
-      console.log('Round récupéré:', currentRound);
     }
   } catch (error) {
     console.error('Erreur lors du parsing des données du match:', error);
@@ -32,46 +26,34 @@ export default function CountPointsPage() {
     );
   }
 
-  const handleCountPointsButton = (player: TxekPlayer, match: TxekMatch) => {
-    // TODO: Logique pour le comptage des points
-    
-    router.push({
-      pathname: '/(game)/count-points',
-      params: { matchData: JSON.stringify(match), player: JSON.stringify(player) }, 
-    })
-  };
 
-  const handleNextRoundButton = () => {
-    match.createNewRound();
-
+  const handleSaveGameButton = () => {
     router.push({
       pathname: '/(game)/game',
       params: { matchData: JSON.stringify(match) },
     })
   };
 
-  const handleFinishGameButton = () => {
-
+  const handleCloseGameButton = () => {
     router.push({
-      pathname: '/(game)/game-end',
-      params: { matchData: JSON.stringify(match) },
+      pathname: '/',
     })
   };
 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Round {match.getCurrentRoundIndex() + 1} </Text>
+      <Text style={styles.title}>Classement </Text>
       <Text>Nombre de manches: {match.roundMax}</Text>
       <Text>Joueurs:</Text>
       {match.players.map((player, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: Index utilisé pour la clé unique
         <View key={index} style={styles.playerRow}>
-          <Text>{player.name} - Points: {player.points} - Deck: {currentRound[player.name]}</Text>
+          <Text>{player.name} - Points: {player.points}</Text>
           <Pressable 
             style={styles.button}
             onPress={() => {
               console.log(`Button pressed for ${player.name}`);
-              handleCountPointsButton(player, match);
             }} //DEBUG
           >
             <Text style={styles.buttonText}>+</Text>
@@ -80,20 +62,17 @@ export default function CountPointsPage() {
       ))}
       {/* Boutton Manche suivante */}
       <View style={styles.container}>
-        {match.getCurrentRoundIndex() < match.roundMax ? (
-          <TxekButton 
-            text="Manche suivante"
+        <TxekButton 
+              text="Enregistrer la partie"
+              variant="secondary"
+              onPress={ () => { handleSaveGameButton(); }} 
+            />
+        </View>
+        <TxekButton 
+            text="Fermer"
             variant="primary"
-            onPress={ () => { handleNextRoundButton(); }} 
+            onPress={ () => { handleCloseGameButton(); }} 
           />
-        ) : (
-          <TxekButton 
-            text="Finir la partie"
-            variant="secondary"
-            onPress={ () => { handleFinishGameButton(); }} 
-          />
-        )}
-      </View>
     </View>
   );
 }

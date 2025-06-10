@@ -3,10 +3,24 @@ import { StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import UserInput from "@/components/UserInput";
 import TxekButton from "@/components/TxekButton";
+import ConnexionModal from "@/components/ConnexionModal";
+import { useState } from "react";
 
 export default function TabIndex() {
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+
   return (
+    
     <View style={styles.container}>
+      <ConnexionModal
+        setIsVisible={() => setIsModalVisible(!isModalVisible)}
+        isVisibile={isModalVisible}
+        onLogin={ () => { console.log("Confirm");} }
+        onCancel={ () => {}}
+        message="Voulez-vous créer une nouvelle partie à partir des parametres de la partie précédente ?"
+      />
       <Text style={styles.title}>Tab One</Text>
       <View
         style={styles.separator}
@@ -29,8 +43,7 @@ export default function TabIndex() {
       <TxekButton 
         text="Bouton"
         variant="primary"
-        onPress={ () => { console.log("Custom button pressed");
-        }} 
+        onPress={ () => { setIsModalVisible(!isModalVisible); }} 
       />
     </View>
   );
