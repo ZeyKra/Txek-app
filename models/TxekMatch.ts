@@ -25,13 +25,13 @@ export default class TxekMatch {
     getWinner() {
         return this.winner; 
     }
-    
-    setWinner(winner: TxekPlayer) {
-        this.winner = winner;
+
+    getPlayers() : TxekPlayer[] {
+        return this.players;
     }
 
-    setStatus(status: string) {
-        this.status = status;
+    setWinner(winner: TxekPlayer) {
+        this.winner = winner;
     }
 
     getRounds() : TxekRound[] {
