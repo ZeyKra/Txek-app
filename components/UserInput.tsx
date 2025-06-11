@@ -13,6 +13,7 @@ interface UserInputProps extends TextInputProps {
   backgroundFadeColor?: string; 
   outlineColor?: string;
   outlineFadeColor?: string;
+  inputType?: 'email' | 'password' | 'text';
 }
 
 const UserInput: React.FC<UserInputProps> = ({
@@ -24,7 +25,29 @@ const UserInput: React.FC<UserInputProps> = ({
   backgroundFadeColor = 'red',
   outlineColor = 'yellow',
   outlineFadeColor = 'green',
+  inputType = 'text',
+  ...otherProps
 }) => {
+  // Configure input properties based on type
+  const getInputProps = () => {
+    switch (inputType) {
+      case 'email':
+        return {
+          keyboardType: 'email-address' as const,
+          autoCapitalize: 'none' as const,
+          autoCorrect: false,
+        };
+      case 'password':
+        return {
+          secureTextEntry: true,
+          autoCapitalize: 'none' as const,
+          autoCorrect: false,
+        };
+      default:
+        return {};
+    }
+  };
+
   return (
     <View style={styles.container} testID='UserInput'>
       {/* Main outline shadow layer */}
@@ -57,6 +80,8 @@ const UserInput: React.FC<UserInputProps> = ({
               value={value}
               onChangeText={onChangeText}
               placeholderTextColor="#999"
+              {...getInputProps()}
+              {...otherProps}
             />
             </View>
         </View>
