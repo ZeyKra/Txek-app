@@ -17,9 +17,8 @@ export default function TabIndex() {
       <ConnexionModal
         setIsVisible={() => setIsModalVisible(!isModalVisible)}
         isVisibile={isModalVisible}
-        onLogin={ () => { console.log("Confirm");} }
         onCancel={ () => {}}
-        message="Voulez-vous créer une nouvelle partie à partir des parametres de la partie précédente ?"
+        message="Connexion au compte Txek"
       />
       <Text style={styles.title}>Tab One</Text>
       <View
