@@ -3,8 +3,8 @@ import { View } from "@/components/Themed";
 import TxekButton from "./TxekButton";
 import UserInput from "./UserInput";
 import { useState } from "react";
-import { authAPI, type LoginRequest } from "@/services/auth";
-import { setStorageToken } from "@/app/backend/storage";
+import { authAPI, type UserData, type LoginRequest } from "@/services/auth";
+import { setStorageToken, setStorageUserData } from "@/app/backend/storage";
 
 type ConnexionModalProps = {
   isVisibile: boolean;
@@ -55,19 +55,22 @@ export default function ConnexionModal(props: ConnexionModalProps) {
     try {
 
       const data = await authAPI.login(creds)
-
-
+      
       if (data) {
         // Success
         console.log('Connexion réussie:', data); //DEBUG
+        const userData: UserData = await authAPI.getData(data.token);
+        console.log('Données utilisateur récupérées:', userData); //DEBUG
 
         // Store user data/token if needed
-        setStorageToken(data.token)
+        setStorageToken(data.token);
+        setStorageUserData(userData);
         // await AsyncStorage.setItem('userData', JSON.stringify(data.user));
 
         // Clear form and close modal
         setEmail('');
         setPassword('');
+        setError('');
         props.setIsVisible(false);
 
       } else {
@@ -101,6 +104,7 @@ export default function ConnexionModal(props: ConnexionModalProps) {
                 // Clear form when closing
                 setEmail('');
                 setPassword('');
+                setError('');
               }}
               disabled={loading}
             >

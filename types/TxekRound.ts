@@ -1,4 +1,4 @@
 export interface TxekRound {
-    createdAt: Date,
+    created_at: Date,
     [key: string]: string[] | Date | number,
 };

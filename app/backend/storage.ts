@@ -46,7 +46,7 @@ async function getStorageToken() : Promise<string | undefined>  {
 
 function setStorageUserData(userData: UserData) {    
     try {   
-        AsyncStorage.setItem('user_token', JSON.stringify(userData));
+        AsyncStorage.setItem('user_data', JSON.stringify(userData));
     } catch (e) {
         // saving error
         throw new Error("Erreur lors de l'enregistrement des UserData");
@@ -55,7 +55,7 @@ function setStorageUserData(userData: UserData) {
 
 async function getStorageUserData() : Promise<UserData | undefined>  {
     try {
-        const storageUserData = await AsyncStorage.getItem('user_token');
+        const storageUserData = await AsyncStorage.getItem('user_data');
         if (storageUserData !== null) {
             return JSON.parse(storageUserData) as UserData;
         } 
@@ -65,8 +65,24 @@ async function getStorageUserData() : Promise<UserData | undefined>  {
     }
 }
 
+function clearStorageToken() {
+    try {
+        AsyncStorage.removeItem('user_token');
+    } catch (e) {
+        // error removing value
+        throw new Error("Erreur lors de la suppression du token");
+    }
+}
 
+function clearStorageUserData() {
+    try {
+        AsyncStorage.removeItem('user_data');
+    } catch (e) {
+        // error removing value
+        throw new Error("Erreur lors de la suppression des UserData");
+    }
+}
 
 // TODO: ClearLastGameSettings
 
-export { exportLastGameSettings, importLastGameSettings, setStorageToken, getStorageToken }
+export { exportLastGameSettings, importLastGameSettings, setStorageToken, getStorageToken, setStorageUserData, getStorageUserData, clearStorageToken, clearStorageUserData }

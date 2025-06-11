@@ -5,6 +5,7 @@ import UserInput from "@/components/UserInput";
 import TxekButton from "@/components/TxekButton";
 import ConnexionModal from "@/components/ConnexionModal";
 import { useState } from "react";
+import { clearStorageToken, clearStorageUserData } from "../backend/storage";
 
 export default function TabIndex() {
 
@@ -36,8 +37,10 @@ export default function TabIndex() {
       <TxekButton 
         text="TxekButton"
         buttonColor="#6E48AD" buttonShadowColor="#4E3379"
-        onPress={ () => { console.log("Custom button pressed");
-        }} 
+        onPress={ () => { 
+          clearStorageToken()
+          clearStorageUserData()
+         }}
       />
       <TxekButton 
         text="Bouton"

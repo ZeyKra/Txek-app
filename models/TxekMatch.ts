@@ -62,7 +62,7 @@ export default class TxekMatch {
     
     createNewRound() {
         const newRound: TxekRound = {
-            createdAt: new Date(),
+            created_at: new Date(),
         }
         this.players.map(player => {
             newRound[player.name] = [];

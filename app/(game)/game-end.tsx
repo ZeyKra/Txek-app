@@ -2,6 +2,11 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import TxekMatch from '@/models/TxekMatch';;
 import TxekButton from '@/components/TxekButton';
+import { getStorageToken, getStorageUserData } from '../backend/storage';
+import ConnexionModal from '@/components/ConnexionModal';
+import { useState } from 'react';
+import {registerMatchRounds, registerTxekMatch} from '@/services/api'; // Assurez-vous que le chemin est correct
+import { replace } from 'expo-router/build/global-state/routing';
 
 export default function EndGamePage() {
   const params = useLocalSearchParams();
@@ -27,11 +32,26 @@ export default function EndGamePage() {
   }
 
 
-  const handleSaveGameButton = () => {
-    router.push({
-      pathname: '/(game)/game',
-      params: { matchData: JSON.stringify(match) },
-    })
+  const handleSaveGameButton = async () => {
+    const userData = await getStorageUserData();
+    const token = await getStorageToken();
+    if (!userData || !token) {
+      console.error('Utilisateur non connecté ou token manquant');
+      setIsModalVisible(true);
+      return;
+    }
+    
+    try {
+      const response = await registerTxekMatch(match);
+      console.log('Partie enregistrée avec succès', response); //DEBUG
+
+      const matchId = (response.id as string).split(':')[1]; // Nettoyer la réponse pour obtenir l'ID du match
+
+      const roundResponse = await registerMatchRounds(match, matchId);
+      console.log('Manches enregistrées avec succès', roundResponse); //DEBUG
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement de la partie:', error);
+    } 
   };
 
   const handleCloseGameButton = () => {
@@ -41,8 +61,16 @@ export default function EndGamePage() {
   };
 
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   return (
     <View style={styles.container}>
+      <ConnexionModal
+        setIsVisible={() => setIsModalVisible(!isModalVisible)}
+        isVisibile={isModalVisible}
+        onCancel={() => { }}
+        message="Connexion au compte Txek"
+      />
       <Text style={styles.title}>Classement </Text>
       <Text>Nombre de manches: {match.roundMax}</Text>
       <Text>Joueurs:</Text>
@@ -50,7 +78,7 @@ export default function EndGamePage() {
         // biome-ignore lint/suspicious/noArrayIndexKey: Index utilisé pour la clé unique
         <View key={index} style={styles.playerRow}>
           <Text>{player.name} - Points: {player.points}</Text>
-          <Pressable 
+          <Pressable
             style={styles.button}
             onPress={() => {
               console.log(`Button pressed for ${player.name}`);
@@ -62,17 +90,17 @@ export default function EndGamePage() {
       ))}
       {/* Boutton Manche suivante */}
       <View style={styles.container}>
-        <TxekButton 
-              text="Enregistrer la partie"
-              variant="secondary"
-              onPress={ () => { handleSaveGameButton(); }} 
-            />
-        </View>
-        <TxekButton 
-            text="Fermer"
-            variant="primary"
-            onPress={ () => { handleCloseGameButton(); }} 
-          />
+        <TxekButton
+          text="Enregistrer la partie"
+          variant="secondary"
+          onPress={() => { handleSaveGameButton(); }}
+        />
+      </View>
+      <TxekButton
+        text="Fermer"
+        variant="primary"
+        onPress={() => { handleCloseGameButton(); }}
+      />
     </View>
   );
 }
