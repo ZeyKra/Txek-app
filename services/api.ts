@@ -15,7 +15,6 @@ async function registerTxekMatch(txekMatchData: TxekMatch): Promise<string> {
         console.log('User data retrieved:', userData); // DEBUG: Log the user data being used
         
         
-        
         if (!token) {
             throw new Error('No authentication token found');
         }
@@ -110,4 +109,58 @@ async function registerMatchRounds(txekMatch: TxekMatch, matchId: string): Promi
     }
 }
 
-export { registerTxekMatch, registerMatchRounds };
+async function FetchAPIMatch() {
+    try {
+        const token = await getStorageToken();
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        const userData: UserData | undefined = await getStorageUserData();
+
+        const response = await fetch(`${API_BASE_URL}/protected/user/${userData?.id}/history`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching matches:', error);
+        throw error;
+    }
+}   
+
+async function fetchAPIMatchRounds(matchId: string) {
+    try {
+        const token = await getStorageToken();
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        const response = await fetch(`${API_BASE_URL}/protected/matches/${matchId}/rounds`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching matches:', error);
+        throw error;
+    }
+}
+
+export { registerTxekMatch, registerMatchRounds, FetchAPIMatch, fetchAPIMatchRounds };

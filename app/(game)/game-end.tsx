@@ -6,7 +6,6 @@ import { getStorageToken, getStorageUserData } from '../backend/storage';
 import ConnexionModal from '@/components/ConnexionModal';
 import { useState } from 'react';
 import {registerMatchRounds, registerTxekMatch} from '@/services/api'; // Assurez-vous que le chemin est correct
-import { replace } from 'expo-router/build/global-state/routing';
 
 export default function EndGamePage() {
   const params = useLocalSearchParams();

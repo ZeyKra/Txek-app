@@ -29,7 +29,11 @@ export default class TxekMatch {
     setWinner(winner: TxekPlayer) {
         this.winner = winner;
     }
-    
+
+    setStatus(status: string) {
+        this.status = status;
+    }
+
     getRounds() : TxekRound[] {
         return this.rounds; 
     }
