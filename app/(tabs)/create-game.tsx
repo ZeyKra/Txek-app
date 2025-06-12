@@ -18,10 +18,10 @@
  * États:
  * - isModalVisible: Contrôle l'affichage de la modal de confirmation
  */
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { importLastGameSettings } from "../backend/storage"
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
@@ -36,7 +36,7 @@ export default function TabCreateGame() {
    * 
    * return void
   */
-  const handeCreateGameButton = async () => {
+  const handleCreateGameButton = async () => {
     const lastGameSettings = await importLastGameSettings();
     if(lastGameSettings !== null && lastGameSettings !== undefined){
       console.log("lastGameSettings", lastGameSettings); 
@@ -106,7 +106,7 @@ export default function TabCreateGame() {
         
       <TxekButton
         text="Lancer une nouvelle partie"
-        onPress={() => handleLoadGameButton()}
+        onPress={() => {handleCreateGameButton()}}
       />
     </View>
   );

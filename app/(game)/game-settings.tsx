@@ -22,6 +22,7 @@ import { Text, View } from "@/components/Themed";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import UserInput from "@/components/UserInput";
+import TxekButton from "@/components/TxekButton";
 
 import TxekMatch from "@/models/TxekMatch";
 import { createPlayer } from "@/app/backend/functions/functions";
@@ -30,6 +31,7 @@ import { exportLastGameSettings } from "../backend/storage"
 export default function GameSettingsPage() {  
   const [players, setPlayers] = useState<string[]>([""]);
   const [errors, setErrors] = useState<string[]>([]);
+  const [rounds, setRounds] = useState<number>(3);
 
   const params = useLocalSearchParams() ?? {}; 
   // Passage de param dans une autre variable a
@@ -43,6 +45,7 @@ export default function GameSettingsPage() {
         const playerList: string[] = matchSettings.players.map(player => player.name)
         
         setPlayers(playerList);
+        setRounds(matchSettings.roundMax);
       }
     } catch (error) {
       console.error('Erreur lors du parsing des données du match:', error);
@@ -121,10 +124,11 @@ export default function GameSettingsPage() {
     
     try {
       // Créer le jeu avec les joueurs valides
-      const match = new TxekMatch(5) //TODO: Changer avec l'objet match
+      const match = new TxekMatch(rounds - 1); // rounds - 1 car le round 0 est créé automatiquement
       validPlayers.map(player => {
         match.players.push(createPlayer(player));
       });
+
 
       match.createNewRound();
       exportLastGameSettings(match);
@@ -138,6 +142,18 @@ export default function GameSettingsPage() {
     }
   };
 
+  const incrementRounds = () => {
+    if (rounds < 10) {
+      setRounds(rounds + 1); // Mise à jour de la valeur dans matchSettings
+    }
+  };
+
+  const decrementRounds = () => {
+    if (rounds > 1) {
+      setRounds(rounds - 1);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -146,6 +162,24 @@ export default function GameSettingsPage() {
         style={styles.container}
         contentContainerStyle={styles.inputContainer}
       >
+        <View style={styles.roundSelector}>
+          <TxekButton
+            text="-"
+            onPress={() => decrementRounds()}
+            buttonColor="#E03C38"
+            buttonShadowColor="#CB1612"
+            style={styles.roundTxekButton}
+          />
+          <Text style={styles.roundText}>{rounds}</Text>
+          <TxekButton
+            text="+"
+            onPress={() => {incrementRounds()}}
+            buttonColor="#4CAF50"
+            buttonShadowColor="#388E3C"
+            style={styles.roundTxekButton}
+          />
+        </View>
+        
         {players.map((player : string, index: number) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: Index utilisé pour la clé unique
           <View key={index} style={styles.inputWrapper}>
@@ -165,30 +199,20 @@ export default function GameSettingsPage() {
             ) : null}
           </View>
         ))}
-        <Pressable style={styles.button} onPress={handleStartGame}>
-          <Text style={styles.buttonText}>Commencer la partie</Text>
-        </Pressable>
+        <TxekButton
+          text="Commencer la partie"
+          onPress={() => handleStartGame()}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   container: {
+    fontFamily: 'FeatherBold',
     flex: 1,
     backgroundColor: "#fff",
-  },
-  button: {
-    backgroundColor: "#841584",
-    padding: 10,
-    borderRadius: 2,
-    alignItems: "center",
-    color: "white",
   },
   inputContainer: {
     padding: 20,
@@ -208,22 +232,18 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     borderWidth: 5,
     borderColor: "red",
-    // 
-    // Outer shadow
     shadowColor: "#000",
     shadowOffset: {
       width: 4,
       height: 4,
     },
     shadowOpacity: 1,
-    shadowRadius: 0, // Sharp shadow for cartoon effect
+    shadowRadius: 0,
     elevation: 8,
-    // Inner shadow effect
     borderBottomWidth: 8,
     borderRightWidth: 8,
     borderBottomColor: 'rgba(0,0,0,0.1)',
     borderRightColor: 'rgba(0,0,0,0.1)',
-    // Inner shadow for cartoon effect
     borderTopColor: 'rgba(255, 0, 0, 0.5)',
     borderLeftColor: 'rgb(255, 0, 0)',
     borderTopWidth: 2,
@@ -239,5 +259,25 @@ const styles = StyleSheet.create({
     marginTop: 5,
     alignSelf: 'flex-start',
     marginLeft: '5%',
-  }
+  },
+  roundSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    gap: 15,
+  },
+  roundTxekButton: {
+    minWidth: 40,
+    maxWidth: 50,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  roundText: {
+    fontSize: 35,
+    fontWeight: "bold",
+    color: "#495057",
+    minWidth: 40,
+    textAlign: 'center',
+  },
 });
