@@ -165,7 +165,7 @@ export default function ConnexionModal(props: ConnexionModalProps) {
 
 const styles = StyleSheet.create({
   centeredView: {
-    backgroundColor: 'rgba(0,0,0,0.5)', // Add backdrop
+    backgroundColor: 'rgba(0,0,0,0.2)', // Add backdrop
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

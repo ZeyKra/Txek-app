@@ -7,7 +7,8 @@ import { getStorageToken, getStorageUserData } from '../backend/storage';
 import ConnexionModal from '@/components/ConnexionModal';
 import { useState } from 'react';
 import { registerMatchRounds, registerTxekMatch } from '@/services/api'; // Assurez-vous que le chemin est correct
-import { TxekPlayer } from '@/types/TxekPlayer';
+import type { TxekPlayer } from '@/types/TxekPlayer';
+import Toast from 'react-native-toast-message';
 
 const { width, height } = Dimensions.get('window');
 
@@ -47,7 +48,7 @@ const WhiteEndgamePage = () => {
     }
   };
 
-  setWinner(matchData.players); 
+  setWinner(matchData.players);
   const topPlayers = getTopPlayers(matchData.players);
   const [first, second, third] = topPlayers;
 
@@ -103,6 +104,10 @@ const WhiteEndgamePage = () => {
     );
   }
 
+  const [isDisabledSaveGameButton, setIsDisabledSaveGameButton] = useState(false);
+  const [saveGameButtonText, setSaveGameButtonText] = useState('Enregistrer la partie');
+  // Fonction pour gérer l'enregistrement de la partie
+
 
   const handleSaveGameButton = async () => {
     const userData = await getStorageUserData();
@@ -114,16 +119,33 @@ const WhiteEndgamePage = () => {
     }
 
     try {
+      setIsDisabledSaveGameButton(true); // Désactiver le bouton après l'enregistrement
+      setSaveGameButtonText('Enregistrement en cours...'); // Mettre à jour le texte du bouton
       // Définir le gagnant avant l'enregistrement
       const response = await registerTxekMatch(match);
       console.log('Partie enregistrée avec succès', response); //DEBUG
-
+      
       const matchId = (response.id as string).split(':')[1]; // Nettoyer la réponse pour obtenir l'ID du match
-
+      
       const roundResponse = await registerMatchRounds(match, matchId);
       console.log('Manches enregistrées avec succès', roundResponse); //DEBUG
+      setSaveGameButtonText('Partie enregistrée'); // Mettre à jour le texte du bouton
+      Toast.show({
+        type: 'success',
+        text1: 'Partie enregistrée',
+        text2: 'La partie a été enregistrée avec succès.',
+        visibilityTime: 2000
+      });
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement de la partie:', error);
+      setIsDisabledSaveGameButton(false); // Réactiver le bouton en cas d'erreur
+      setSaveGameButtonText('Réessayer');
+      Toast.show({
+        type: 'error',
+        text1: 'Erreur',
+        text2: 'Token invalide ou expiré. Veuillez vous reconnecter.',
+      });
+      setIsModalVisible(true);
     }
   };
 
@@ -334,8 +356,9 @@ const WhiteEndgamePage = () => {
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
           <TxekButton
-            text="Enregistrer la partie"
+            text={saveGameButtonText}
             variant="secondary"
+            disabled={isDisabledSaveGameButton}
             onPress={() => { handleSaveGameButton(); }}
           />
         </View>
@@ -345,6 +368,7 @@ const WhiteEndgamePage = () => {
           onPress={() => { handleCloseGameButton(); }}
         />
       </ScrollView>
+      <Toast position="bottom" bottomOffset={50} />
     </SafeAreaView>
   );
 };
@@ -501,9 +525,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     marginBottom: 6,
-  },
-  winnerName: {
-    fontSize: 24,
   },
   playerPoints: {
     fontSize: 16,
