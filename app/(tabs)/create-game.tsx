@@ -25,6 +25,7 @@ import { Link, router } from "expo-router";
 import { importLastGameSettings } from "../backend/storage"
 import ConfirmationModal from "@/components/ConfirmationModal";
 import { useState } from "react";
+import TxekButton from "@/components/TxekButton";
 
 export default function TabCreateGame() {
 
@@ -97,20 +98,16 @@ export default function TabCreateGame() {
       />
       {/* <Button title="Start Game" onPress={() => {}} /> */}
    
-      {/* <Link href="/(game)/game-settings" style={styles.button} asChild>
-        <Pressable>
-          <Text style={styles.button_text}> Créer Game</Text>
-        </Pressable>
-      </Link>  */}
-      <Pressable onPress={() => handeCreateGameButton()}>
-        <Text > creer </Text>
-      </Pressable>
-        
-      <Link href="/(settings)/game-history" style={styles.button} asChild>
+      {/* <Link href="/(settings)/game-history" style={styles.button} asChild>
         <Pressable>
           <Text style={styles.button_text}> Charger Partie</Text>
         </Pressable>
-      </Link>
+      </Link> */}
+        
+      <TxekButton
+        text="Lancer une nouvelle partie"
+        onPress={() => handleLoadGameButton()}
+      />
     </View>
   );
 }
