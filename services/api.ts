@@ -20,12 +20,23 @@ async function registerTxekMatch(txekMatchData: TxekMatch): Promise<string> {
         }
 
         //TODO ADD Winner
-        const matchData = {
+        const matchData: {
+            created_at: Date;
+            round_max: number;
+            players: string[];
+            owner_id: string;
+            winner?: string;
+        } = {
             created_at: txekMatchData.createdAt,
             round_max: txekMatchData.roundMax,
             players: txekMatchData.players.map(player => player.name),
             owner_id: `RecordedUser:${userData?.id}`
         };
+
+        if (txekMatchData.winner) {
+            matchData.winner = txekMatchData.winner.name;
+        }
+
         console.log('Match data to be sent:', matchData); // DEBUG: Log the match data being sent
         
         const response = await fetch(`${API_BASE_URL}/protected/matches`, {

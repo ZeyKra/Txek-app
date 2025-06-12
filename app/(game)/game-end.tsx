@@ -7,6 +7,7 @@ import { getStorageToken, getStorageUserData } from '../backend/storage';
 import ConnexionModal from '@/components/ConnexionModal';
 import { useState } from 'react';
 import { registerMatchRounds, registerTxekMatch } from '@/services/api'; // Assurez-vous que le chemin est correct
+import { TxekPlayer } from '@/types/TxekPlayer';
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,7 +31,7 @@ const WhiteEndgamePage = () => {
   const matchData = match as TxekMatch // Utiliser les données de match ou les données d'exemple
 
   // Caculer le top 3 des joueurs
-  const getTopPlayers = (players) => {
+  const getTopPlayers = (players: TxekPlayer[]) => {
     const sortedPlayers = [...players].sort((a, b) => a.points - b.points);
     return sortedPlayers.slice(0, 3).map((player, index) => ({
       ...player,
@@ -39,6 +40,14 @@ const WhiteEndgamePage = () => {
     }));
   };
 
+  const setWinner = (players: TxekPlayer[]) => {
+    const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
+    if (match) {
+      match.winner = sortedPlayers[0]; // Le joueur avec le plus de points
+    }
+  };
+
+  setWinner(matchData.players); 
   const topPlayers = getTopPlayers(matchData.players);
   const [first, second, third] = topPlayers;
 
@@ -105,6 +114,7 @@ const WhiteEndgamePage = () => {
     }
 
     try {
+      // Définir le gagnant avant l'enregistrement
       const response = await registerTxekMatch(match);
       console.log('Partie enregistrée avec succès', response); //DEBUG
 

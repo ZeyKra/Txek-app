@@ -121,7 +121,7 @@ const PlaceholderCardGameHistoryTab = () => {
 
   // Handle match selection
   const handleMatchPress = async (match) => {
-    setSelectedMatch(match);
+    setSelectedMatch(match); // Debugging log
     await fetchRounds(match.id);
     Animated.timing(slideAnim, {
       toValue: 1,
