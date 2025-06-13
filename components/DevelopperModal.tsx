@@ -2,7 +2,8 @@ import { Modal, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { View } from "@/components/Themed";
 import TxekButton from "./TxekButton";
 import { useState } from "react";
-import { clearStorageToken, clearStorageUserData } from "@/app/backend/storage";
+import { clearStorageToken, clearStorageUserData, getStorageToken } from "@/app/backend/storage";
+import config from "@/config.json";
 
 type DevelopperModalProps = {
     isVisibile: boolean;
@@ -22,6 +23,36 @@ export default function DeveloperModal(props: DevelopperModalProps) {
         clearStorageUserData();
         setMessage("Données utilisateur supprimées avec succès.");
     }
+
+    const handleCORSRequest = async () => {
+        const URL = config.API_URL; // Ensure this is defined in your config
+        const matchId = "1v2guhh1sqi8nlwyrx1e"; // Example match ID
+        const token = getStorageToken();
+
+        const reqBody = {
+            winner: "Dodo",
+            status: "in_progress"
+        };
+
+        try {
+
+            const response = await fetch(`${URL}/protected/matches/${matchId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}` // Ensure you have the correct token
+                },
+                body: JSON.stringify({ reqBody })
+            });
+
+            const data = await response.json();
+            setMessage(data)
+            console.log('CORS request successful:', data);
+        } catch (error) {
+            console.error('Error during CORS request:', error);
+        }
+    };
 
     return (
         <View>
@@ -56,8 +87,6 @@ export default function DeveloperModal(props: DevelopperModalProps) {
                                 buttonColor="#56BB4F"
                                 buttonShadowColor="#40853B"
                             />
-                        </View>
-                        <View style={styles.ModalContainer}>
                             <TxekButton
                                 onPress={handleClearStorageUserData}
                                 text="Supprimer les données utilisateur"
@@ -65,7 +94,15 @@ export default function DeveloperModal(props: DevelopperModalProps) {
                                 buttonColor="#E74C3C"
                                 buttonShadowColor="#C0392B"
                             />
+                            <TxekButton
+                                onPress={handleCORSRequest}
+                                text="Tester CORS Request"
+                                variant="primary"
+                                buttonColor="#E03C38"
+                                buttonShadowColor="#CB1612"
+                            />
                         </View>
+
                         {message.length > 1 ? (
                             <Text style={styles.messageText}>{message}</Text>
                         ) : null}
