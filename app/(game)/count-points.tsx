@@ -24,6 +24,7 @@ import {
 } from "react-native"
 import Svg, { Circle, Path } from "react-native-svg"
 import { countDeck } from "@/app/backend/deck"
+import TxekButton from "@/components/TxekButton"
 
 // Enable LayoutAnimation for Android
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -433,9 +434,12 @@ const UnoKeyboard = ({ onCardSelect, visible, activeColor, onToggleColor, onDone
       <View style={styles.keyboardHeader}>
         <Text style={styles.keyboardTitle}>{activeColor === "red" ? "Red" : "Black"} Cards</Text>
 
-        <TouchableOpacity style={styles.doneButtonContainer} onPress={onDone}>
-          <Text style={styles.doneButton}>Done</Text>
-        </TouchableOpacity>
+        <TxekButton
+          text="Terminé"
+          onPress={onDone}
+          variant="primary"
+          size="small"
+        />
       </View>
 
       {/* Card grid */}
@@ -593,7 +597,7 @@ const countPointPage = () => {
               <Text style={styles.selectedCardsCount}>{selectedCards.length}</Text>
               {selectedCards.length > 0 && (
                 <TouchableOpacity style={styles.clearSelectionButton} onPress={clearSelection}>
-                  <Text style={styles.clearSelectionButtonText}>Clear</Text>
+                  <Text style={styles.clearSelectionButtonText}>Effacer</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -601,13 +605,18 @@ const countPointPage = () => {
 
           <SelectedCardsList cards={selectedCards} onRemoveCard={handleRemoveCard} maxHeight={selectedCardsMaxHeight} />
         </View>
-
-        <TouchableOpacity style={styles.selectCardsButton} onPress={showKeyboard}>
-          <Text style={styles.selectCardsButtonText}>Selection des cartes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.selectCardsButton} onPress={handleConfirm}>
-          <Text style={styles.selectCardsButtonText}>confirmer</Text>
-        </TouchableOpacity>
+        
+        <TxekButton
+          text="Selection des cartes"
+          onPress={showKeyboard}
+          variant="primary"
+        />
+        <TxekButton
+          text="Confirmer"
+          onPress={handleConfirm}
+          variant="primary"
+          buttonColor="#1c1d21" buttonShadowColor="#000000"
+        />
       </View>
 
       {/* Modal approach to avoid iOS keyboard issues */}

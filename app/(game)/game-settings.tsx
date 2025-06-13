@@ -44,8 +44,12 @@ export default function GameSettingsPage() {
         matchSettings = JSON.parse(matchDataParam as string) as TxekMatch;
         const playerList: string[] = matchSettings.players.map(player => player.name)
         
+        if (matchSettings.roundMax < 0 || matchSettings.roundMax > 10) {
+          matchSettings.roundMax = 2;
+        }
+
         setPlayers(playerList);
-        setRounds(matchSettings.roundMax);
+        setRounds(matchSettings.roundMax + 1); // rounds + 1 car le round 0 est créé automatiquement
       }
     } catch (error) {
       console.error('Erreur lors du parsing des données du match:', error);
@@ -57,7 +61,7 @@ export default function GameSettingsPage() {
     players.map((player, index) => {
       if (player.length > 15) {
         newErrors[index] = "Le nom du joueur ne peut pas dépasser 15 caractères"; 
-      }else if(player.match(/[^a-zA-Z0-9\s]/)) {
+      }else if(player.match(/[^a-zA-Z0-9]/)) {
         newErrors[index] = "Le nom du joueur ne peut contenir que des lettres et des chiffres";       
       } else if (player.trim() !== "" && players.findIndex((p, i) => p.trim().toLowerCase() === player.trim().toLowerCase() && i !== index) !== -1) {
         newErrors[index] = "Ce nom de joueur existe déjà";

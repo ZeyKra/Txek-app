@@ -37,6 +37,7 @@ export default class TxekMatch {
     getRounds() : TxekRound[] {
         return this.rounds; 
     }
+
     
     getCurrentRound() : TxekRound {
         return this.rounds[this.rounds.length - 1];

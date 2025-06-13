@@ -476,6 +476,7 @@ const PlaceholderCardGameHistoryTab = () => {
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>Aucun match trouvé</Text>
             <Text style={styles.emptySubtext}>Tirez vers le bas pour actualiser</Text>
+            
           </View>
         )}
       </ScrollView>
