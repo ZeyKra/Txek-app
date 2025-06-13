@@ -19,21 +19,32 @@ export default function ConfirmationModal(props: ConfirmationModalProps){
           animationType="slide"
           transparent={true}
           visible={props.isVisibile}
+          testID="confirmation-modal"
           >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-                <Text style={styles.modalText} numberOfLines={3} ellipsizeMode="tail">{props.message}</Text>
+                <Text 
+                  style={styles.modalText} 
+                  numberOfLines={3} 
+                  ellipsizeMode="tail"
+                  testID="modal-message"
+                >
+                  {props.message}
+                </Text>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                     <TxekButton
+                        testID="confirm-button"
                         onPress={() => {
                           props.onConfirm();
                           props.setIsVisible(false);
                         }}
                         text={props.confirmText ? props.confirmText : "Oui"}
                         variant="primary"
-                        buttonColor="#56BB4F" buttonShadowColor="#40853B"
+                        buttonColor="#56BB4F" 
+                        buttonShadowColor="#40853B"
                     />
                     <TxekButton
+                        testID="cancel-button"
                         onPress={() => {
                           props.onCancel();
                           props.setIsVisible(false);

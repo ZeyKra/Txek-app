@@ -11,7 +11,8 @@ interface TxekButtonProps {
   style?: ViewStyle;
   textStyle?: TextStyle;
   buttonColor?: string;
-  buttonShadowColor?: string; 
+  buttonShadowColor?: string;
+  testID?: string; // Ajouter cette prop
 }
 
 export const TxekButton = ({
@@ -23,11 +24,12 @@ export const TxekButton = ({
   style,
   textStyle,
   buttonColor,
-  buttonShadowColor
+  buttonShadowColor,
+  testID, // Ajouter ici
 }: TxekButtonProps) => {
   return (
     <TouchableOpacity
-      testID='TxekButton'
+      testID={testID || 'TxekButton'} // Utiliser testID personnalisé ou par défaut
       onPress={onPress}
       disabled={disabled}
       style={[
